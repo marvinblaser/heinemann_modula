@@ -13,7 +13,7 @@ function initColorSelector() {
     const colorImagePaths = {
         "color-ral1001": "assets/img/machines/modula-l/RAL1001.jpg",
         "color-ral1013": "assets/img/machines/modula-l/RAL1013.jpg",
-        "color-ral1024": "assets/img/machines/modula-l/RAL1028.jpg",
+        "color-ral1028": "assets/img/machines/modula-l/RAL1028.jpg",
         "color-ral3004": "assets/img/machines/modula-l/RAL3004.jpg",
         "color-ral3020": "assets/img/machines/modula-l/RAL3020.jpg",
         "color-ral5003": "assets/img/machines/modula-l/RAL5003.jpg",
@@ -31,6 +31,7 @@ function initColorSelector() {
         "color-ral7044": "assets/img/machines/modula-l/RAL7044.jpg",
         "color-ral7045": "assets/img/machines/modula-l/RAL7045.jpg",
         "color-ral9010": "assets/img/machines/modula-l/RAL9010.jpg",
+        "color-ral9016": "assets/img/machines/modula-l/RAL9010.jpg"
     };
 
     // Ajouter les écouteurs d'événements
