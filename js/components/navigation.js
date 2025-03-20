@@ -1,59 +1,72 @@
 // navigation.js - Gestion de la navigation
 document.addEventListener('DOMContentLoaded', function() {
     initNavigation();
-  });
-  
-  function initNavigation() {
+});
+
+function initNavigation() {
     const burgerBtn = document.querySelector('.burger-btn');
     const mainNav = document.querySelector('.main-nav');
-    const navItems = document.querySelectorAll('.nav-item');
     const navClose = document.querySelector('.nav-close');
-    
-    // Identifier la page active
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    
-    // Marquer l'élément de navigation actif
-    navItems.forEach(item => {
-      const itemLink = item.getAttribute('href');
-      if (itemLink === currentPage) {
-        item.classList.add('active');
-      }
-    });
-    
-    // Gestion de l'ouverture/fermeture du menu
-    if (burgerBtn && mainNav) {
-      burgerBtn.addEventListener('click', function() {
-        burgerBtn.classList.toggle('active');
-        mainNav.classList.toggle('active');
-        document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
-      });
+    const overlay = document.querySelector('.overlay');
+    const settingsBtn = document.querySelector('.settings-btn');
+    const settingsMenu = document.querySelector('.settings-menu');
+    const languageDropdown = document.querySelector('.language-dropdown');
+
+    // Ouvrir le menu burger
+    if (burgerBtn) {
+        burgerBtn.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+        });
     }
-    
+
     // Fermer le menu avec le bouton X
     if (navClose) {
-      navClose.addEventListener('click', function() {
-        mainNav.classList.remove('active');
-        burgerBtn.classList.remove('active');
-        document.body.style.overflow = '';
-      });
+        navClose.addEventListener('click', function() {
+            mainNav.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
     }
-    
-    // Fermer le menu au clic sur un élément
-    navItems.forEach(item => {
-      item.addEventListener('click', function() {
-        mainNav.classList.remove('active');
-        burgerBtn.classList.remove('active');
-        document.body.style.overflow = '';
-      });
+
+    // Fermer le menu au clic sur l'overlay
+    if (overlay) {
+        overlay.addEventListener('click', function() {
+            mainNav.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+
+    // Ouvrir le menu des paramètres
+    if (settingsBtn) {
+        settingsBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            settingsMenu.classList.toggle('active');
+        });
+    }
+
+    // Fermer le menu des paramètres au clic à l'extérieur
+    document.addEventListener('click', function(e) {
+        if (!settingsMenu.contains(e.target) && e.target !== settingsBtn) {
+            settingsMenu.classList.remove('active');
+        }
     });
-    
-    // Fermer le menu au redimensionnement de la fenêtre
-    window.addEventListener('resize', function() {
-      if (window.innerWidth >= 1024 && mainNav.classList.contains('active')) {
-        mainNav.classList.remove('active');
-        burgerBtn.classList.remove('active');
-        document.body.style.overflow = '';
-      }
+
+    // Ouvrir le menu de langue
+    const languageSelector = document.querySelector('.language-selector');
+    if (languageSelector) {
+        languageSelector.addEventListener('click', function(e) {
+            e.stopPropagation();
+            languageDropdown.classList.toggle('hide');
+        });
+    }
+
+    // Fermer le menu de langue au clic à l'extérieur
+    document.addEventListener('click', function(e) {
+        if (!languageDropdown.contains(e.target) && e.target !== languageSelector) {
+            languageDropdown.classList.add('hide');
+        }
     });
-  }
-  
+}

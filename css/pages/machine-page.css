@@ -10,7 +10,7 @@
   .machine-image-container {
     background-color: var(--secondary-color);
     border-radius: var(--border-radius-lg);
-    padding: 20px;
+    padding: 0px;
     margin-bottom: 30px;
     text-align: center;
     box-shadow: var(--shadow-light);

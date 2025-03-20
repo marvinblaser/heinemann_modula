@@ -186,7 +186,6 @@ document.addEventListener('DOMContentLoaded', function() {
           'color-ral7035': 'RAL7035',
           'color-ral7044': 'RAL7044',
           'color-ral7045': 'RAL7045',
-          'color-ral9006': 'RAL9006',
           'color-ral9010': 'RAL9010',
           'color-ral9016': 'RAL9016'
         };

@@ -6,145 +6,37 @@ document.addEventListener('DOMContentLoaded', function() {
   // emailjs.init("YOUR_USER_ID");
   
   // Initialisation des composants
-  initNavigation();
-  initSettingsMenu();
-  initAccordions();
-  initColorSelector();
-  initOptionsForm();
+  // initSettingsMenu();
+  // initOptionsForm();
   
   // Gestion du formulaire de configuration
   setupConfigurationModal();
 });
 
-// Initialiser le menu de navigation
-function initNavigation() {
-  const burgerBtn = document.querySelector('.burger-btn');
-  const mainNav = document.querySelector('.main-nav');
-  const closeNavBtn = document.querySelector('.nav-close');
-  const overlay = document.querySelector('.overlay');
-  
-  // Ouvrir le menu
-  if (burgerBtn) {
-    burgerBtn.addEventListener('click', function() {
-      burgerBtn.classList.add('active');
-      mainNav.classList.add('active');
-      if (overlay) overlay.classList.add('active');
-      document.body.style.overflow = 'hidden'; // Empêcher le défilement
-    });
-  }
-  
-  // Fermer le menu
-  if (closeNavBtn) {
-    closeNavBtn.addEventListener('click', function() {
-      burgerBtn.classList.remove('active');
-      mainNav.classList.remove('active');
-      if (overlay) overlay.classList.remove('active');
-      document.body.style.overflow = ''; // Réactiver le défilement
-    });
-  }
-  
-  // Fermer le menu au clic sur l'overlay
-  if (overlay) {
-    overlay.addEventListener('click', function() {
-      burgerBtn.classList.remove('active');
-      mainNav.classList.remove('active');
-      overlay.classList.remove('active');
-      document.body.style.overflow = '';
-    });
-  }
-}
 
-// Initialiser le menu des paramètres
-function initSettingsMenu() {
-  const settingsBtn = document.querySelector('.settings-btn');
-  const settingsMenu = document.querySelector('.settings-menu');
+// // Initialiser le formulaire d'options
+// function initOptionsForm() {
+//   const checkboxes = document.querySelectorAll('.checkbox-container input[type="checkbox"]');
+//   const saveConfigBtn = document.querySelector('.save-config-btn');
   
-  if (settingsBtn && settingsMenu) {
-    settingsBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      settingsMenu.classList.toggle('active');
-    });
-    
-    // Fermer le menu au clic à l'extérieur
-    document.addEventListener('click', function(e) {
-      if (!settingsMenu.contains(e.target) && e.target !== settingsBtn) {
-        settingsMenu.classList.remove('active');
-      }
-    });
-  }
-}
-
-// Initialiser les accordéons
-function initAccordions() {
-  const accordionHeaders = document.querySelectorAll('.accordion-header');
-  
-  accordionHeaders.forEach(header => {
-    header.addEventListener('click', function() {
-      const content = this.nextElementSibling;
+//   if (checkboxes.length && saveConfigBtn) {
+//     saveConfigBtn.addEventListener('click', function() {
+//       // Vérifier si au moins une option est sélectionnée
+//       const hasSelectedOptions = Array.from(checkboxes).some(checkbox => checkbox.checked);
       
-      // Toggle active class
-      this.classList.toggle('active');
+//       if (!hasSelectedOptions) {
+//         alert('Veuillez sélectionner au moins une option.');
+//         return;
+//       }
       
-      // Toggle content visibility
-      if (this.classList.contains('active')) {
-        content.classList.add('active');
-        content.style.maxHeight = content.scrollHeight + 'px';
-      } else {
-        content.classList.remove('active');
-        content.style.maxHeight = '0';
-      }
-    });
-  });
-}
-
-// Initialiser le sélecteur de couleur
-function initColorSelector() {
-  const colorOptions = document.querySelectorAll('.color-option');
-  const machineImage = document.querySelector('#machineImage');
-  
-  if (colorOptions.length && machineImage) {
-    colorOptions.forEach(option => {
-      option.addEventListener('click', function() {
-        // Retirer la classe active de toutes les options
-        colorOptions.forEach(opt => opt.classList.remove('active'));
-        
-        // Ajouter la classe active à l'option cliquée
-        this.classList.add('active');
-        
-        // Changer l'image de la machine (simulé ici)
-        const color = this.className.split(' ').find(cls => cls.startsWith('color-')).replace('color-', '');
-        console.log(`Machine color changed to: ${color}`);
-        
-        // Ici vous changeriez l'image de la machine
-        // machineImage.src = `assets/images/machines/modula-l/${color}.jpg`;
-      });
-    });
-  }
-}
-
-// Initialiser le formulaire d'options
-function initOptionsForm() {
-  const checkboxes = document.querySelectorAll('.checkbox-container input[type="checkbox"]');
-  const saveConfigBtn = document.querySelector('.save-config-btn');
-  
-  if (checkboxes.length && saveConfigBtn) {
-    saveConfigBtn.addEventListener('click', function() {
-      // Vérifier si au moins une option est sélectionnée
-      const hasSelectedOptions = Array.from(checkboxes).some(checkbox => checkbox.checked);
-      
-      if (!hasSelectedOptions) {
-        alert('Veuillez sélectionner au moins une option.');
-        return;
-      }
-      
-      // Ouvrir le modal de configuration
-      const configModal = document.getElementById('configModal');
-      if (configModal) {
-        configModal.classList.add('active');
-      }
-    });
-  }
-}
+//       // Ouvrir le modal de configuration
+//       const configModal = document.getElementById('configModal');
+//       if (configModal) {
+//         configModal.classList.add('active');
+//       }
+//     });
+//   }
+// }
 
 // Configuration du modal pour enregistrer une configuration
 function setupConfigurationModal() {
@@ -265,7 +157,6 @@ function updateRecapitulation() {
           'color-ral7035': 'RAL7035',
           'color-ral7044': 'RAL7044',
           'color-ral7045': 'RAL7045',
-          'color-ral9006': 'RAL9006',
           'color-ral9010': 'RAL9010',
           'color-ral9016': 'RAL9016'
       };
