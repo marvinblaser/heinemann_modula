@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KB MED - Modula L</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components/header.css">
+    <link rel="stylesheet" href="css/components/footer.css">
+    <link rel="stylesheet" href="css/components/dropdown.css">
+    <link rel="stylesheet" href="css/components/buttons.css">
+    <link rel="stylesheet" href="css/components/forms.css">
+    <link rel="stylesheet" href="css/components/modals.css">
+    <link rel="stylesheet" href="css/pages/machine-page.css">
+    <!-- EmailJS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <button class="settings-btn" id="settingsBtn" aria-label="Paramètres">
+            <img src="assets/icons/settings.svg" alt="Paramètres">
+        </button>
+        <div class="logo">
+            <img src="assets/logos/kbmed-logo.svg" alt="KB MED">
+        </div>
+        <button class="burger-btn" id="burgerBtn" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </header>
+
+    <!-- Menu de navigation -->
+    <nav class="main-nav" id="mainNav">
+        <ul>
+            <li><a href="index.html" data-i18n="navigation.machine1">Modula L</a></li>
+            <li><a href="machine2.html" data-i18n="navigation.machine2">Machine 2</a></li>
+            <li><a href="catalogue.html" data-i18n="navigation.catalogue">Catalogue</a></li>
+        </ul>
+    </nav>
+
+    <!-- Menu des langues -->
+    <div class="language-menu" id="languageMenu">
+        <button data-lang="fr">Français</button>
+        <button data-lang="de">Suisse allemand</button>
+        <button data-lang="it">Italien</button>
+    </div>
+
+    <!-- Contenu principal -->
+    <main>
+        <h1 class="machine-title">MODULA L</h1>
+        
+        <div class="machine-image-container">
+            <img id="machineImage" src="assets/images/machines/modula-l/default.jpg" alt="Machine Modula L">
+        </div>
+        
+        <!-- Accordéons/Dropdowns -->
+        <div class="accordion">
+            <!-- Sélection de couleur -->
+            <div class="accordion-item">
+                <button class="accordion-header" data-i18n="accordion.colors">
+                    Changer la couleur
+                    <span class="arrow"></span>
+                </button>
+                <div class="accordion-content">
+                    <div class="color-options">
+                        <button class="color-option active" data-color="blanc" data-i18n="colors.white">Blanc</button>
+                        <button class="color-option" data-color="bleu" data-i18n="colors.blue">Bleu</button>
+                        <button class="color-option" data-color="vert" data-i18n="colors.green">Vert</button>
+                        <button class="color-option" data-color="noir" data-i18n="colors.black">Noir</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Détails techniques -->
+            <div class="accordion-item">
+                <button class="accordion-header" data-i18n="accordion.details">
+                    Détails techniques
+                    <span class="arrow"></span>
+                </button>
+                <div class="accordion-content">
+                    <ul class="tech-details">
+                        <li><span data-i18n="technical.dimensions">Dimensions</span>: 120 x 80 x 60 cm</li>
+                        <li><span data-i18n="technical.weight">Poids</span>: 85 kg</li>
+                        <li><span data-i18n="technical.power">Puissance</span>: 2000W</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Personnalisation -->
+            <div class="accordion-item">
+                <button class="accordion-header" data-i18n="accordion.customize">
+                    Personnaliser ma machine
+                    <span class="arrow"></span>
+                </button>
+                <div class="accordion-content">
+                    <form id="optionsForm">
+                        <div class="options-list">
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="option1" value="Option 1">
+                                <span class="checkmark"></span>
+                                <span data-i18n="options.option1">Option 1</span>
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="option2" value="Option 2">
+                                <span class="checkmark"></span>
+                                <span data-i18n="options.option2">Option 2</span>
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="option3" value="Option 3">
+                                <span class="checkmark"></span>
+                                <span data-i18n="options.option3">Option 3</span>
+                            </label>
+                        </div>
+                        <button type="button" class="btn save-config-btn" id="saveConfigBtn" data-i18n="options.saveConfig">Enregistrer ma configuration</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <button class="cta-button" onclick="window.location.href='catalogue.html'" data-i18n="general.seeMore">Voir le catalogue</button>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-logo">
+            <img src="assets/logos/kbmed-footer.svg" alt="KB MED">
+            <p>Medizintechnik</p>
+        </div>
+        <p class="follow-text" data-i18n="general.follow">Suivez nous là-bas :</p>
+        <div class="social-links">
+            <a href="#"><img src="assets/icons/instagram.svg" alt="Instagram"></a>
+            <a href="#"><img src="assets/icons/facebook.svg" alt="Facebook"></a>
+            <a href="#"><img src="assets/icons/linkedin.svg" alt="LinkedIn"></a>
+        </div>
+        <p class="copyright" data-i18n="general.copyright">© KBMedizintechnik GmbH</p>
+    </footer>
+
+    <!-- Modal pour la configuration -->
+    <div id="configModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="modalStep1" class="modal-step active">
+                <h2 data-i18n="modal.step1Title">Vos coordonnées</h2>
+                <form id="userInfoForm">
+                    <div class="form-group">
+                        <label for="name" data-i18n="form.name">Nom</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstname" data-i18n="form.firstname">Prénom</label>
+                        <input type="text" id="firstname" name="firstname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" data-i18n="form.email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <button type="button" class="btn next-btn" data-i18n="form.next">Suivant</button>
+                </form>
+            </div>
+            <div id="modalStep2" class="modal-step">
+                <h2 data-i18n="modal.step2Title">Récapitulatif</h2>
+                <div class="recap-container">
+                    <div class="color-recap">
+                        <h3 data-i18n="modal.colorChosen">Couleur choisie:</h3>
+                        <p id="selectedColor">Blanc</p>
+                    </div>
+                    <div class="options-recap">
+                        <h3 data-i18n="modal.optionsChosen">Options choisies:</h3>
+                        <ul id="selectedOptions">
+                            <!-- Options sélectionnées générées dynamiquement -->
+                        </ul>
+                    </div>
+                </div>
+                <div id="sendingIndicator" class="loading-spinner hide"></div>
+                <button type="button" class="btn back-btn" data-i18n="form.back">Retour</button>
+                <button type="button" class="btn confirm-btn" data-i18n="form.confirm">Confirmer</button>
+            </div>
+            <div id="modalStep3" class="modal-step">
+                <h2 data-i18n="modal.step3Title">Configuration enregistrée</h2>
+                <p data-i18n="modal.thankYou">Merci! Votre configuration a été enregistrée.</p>
+                <p data-i18n="modal.emailSent">Un email récapitulatif vous a été envoyé.</p>
+                <button type="button" class="btn close-btn" data-i18n="form.close">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

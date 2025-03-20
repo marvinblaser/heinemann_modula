@@ -1,0 +1,70 @@
+{
+    "general": {
+      "seeMore": "Voir le catalogue",
+      "follow": "Suivez nous là-bas :",
+      "copyright": "© KBMedizintechnik GmbH"
+    },
+    "navigation": {
+      "machine1": "Modula L",
+      "machine2": "Modula M",
+      "catalogue": "Catalogue"
+    },
+    "accordion": {
+      "colors": "Changer la couleur",
+      "details": "Détails techniques",
+      "customize": "Personnaliser ma machine"
+    },
+    "colors": {
+        "beige": "Beige",
+        "pearl_white": "Blanc perle",
+        "melon_yellow": "Jaune melon",
+        "crimson_red ": "Rouge pourpre ",
+        "traffic_red ": "Rouge trafic ",
+        "sapphire_blue": "Bleu saphir",
+        "gentian_blue": "Bleu gentiane",
+        "dove_blue": "Bleu pigeon",
+        "traffic_blue": "Bleu trafic",
+        "turquoise_blue": "Bleu turquoise",
+        "pastel_bluemint_green": "Bleu pastel Vert menthe",
+        "pastel turquoise": "Turquoise pastel",
+        "iron gray": "Gris fer",
+        "anthracite_gray": "Gris anthracite",
+        "pebble_gray": "Gris silex",
+        "light_gray": "Gris clair",
+        "silk_gray": "Gris soie",
+        "telegrey_1": "Gris téléobjectif 1",
+        "white_aluminum": "Aluminium blanc",
+        "pure_white": "Blanc pur",
+        "traffic_white": "Blanc trafic"
+    },
+    "technical": {
+      "dimensions": "Dimensions",
+      "weight": "Poids",
+      "power": "Puissance"
+    },
+    "options": {
+      "option1": "Option 1",
+      "option2": "Option 2",
+      "option3": "Option 3",
+      "saveConfig": "Enregistrer ma configuration"
+    },
+    "form": {
+      "name": "Nom",
+      "firstname": "Prénom",
+      "email": "Email",
+      "next": "Suivant",
+      "back": "Retour",
+      "confirm": "Confirmer",
+      "close": "Fermer"
+    },
+    "modal": {
+      "step1Title": "Vos coordonnées",
+      "step2Title": "Récapitulatif",
+      "step3Title": "Configuration enregistrée",
+      "colorChosen": "Couleur choisie:",
+      "optionsChosen": "Options choisies:",
+      "thankYou": "Merci! Votre configuration a été enregistrée.",
+      "emailSent": "Un email récapitulatif vous a été envoyé."
+    }
+  }
+  
