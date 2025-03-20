@@ -1,0 +1,61 @@
+/* Style des accordéons */
+.accordion-item {
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 15px 0;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: normal;
+    color: var(--text-color);
+  }
+  
+  /* Style pour les flèches d'accordéon */
+  .accordion-header .arrow {
+    border-right: 2px solid var(--text-color);
+    border-bottom: 2px solid var(--text-color);
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+    transition: transform 0.3s ease;
+    display: inline-block;
+  }
+  
+  /* Rotation de la flèche quand accordéon ouvert */
+  .accordion-header.active .arrow {
+    transform: rotate(-135deg);
+  }
+  
+  .accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  
+  .accordion-content.active {
+    max-height: 1000px; /* Valeur suffisamment grande pour contenir tout le contenu */
+    padding: 10px 0 20px;
+  }
+  
+  /* Tech details */
+  .tech-details {
+    padding: 10px 0;
+  }
+  
+  .tech-details li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .tech-details li:last-child {
+    border-bottom: none;
+  }
+  

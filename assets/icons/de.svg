@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Calque_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 271">
+  <defs>
+    <style>
+      .cls-1 {
+        opacity: .14;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        fill: #db2727;
+      }
+
+      .cls-4 {
+        opacity: .18;
+      }
+
+      .cls-5 {
+        opacity: .1;
+      }
+    </style>
+  </defs>
+  <g id="swiss">
+    <g id="swiss-2" data-name="swiss">
+      <rect id="bg" class="cls-3" y=".5" width="397" height="270" rx="37.59" ry="37.59"/>
+      <path id="top" class="cls-1" d="M37.5,0h321.2c20.87,0,37.8,16.92,37.8,37.8v71.2L37.5,0Z"/>
+      <g id="cross">
+        <rect class="cls-2" x="166.5" y="45" width="64" height="180"/>
+        <rect class="cls-2" x="108.5" y="103" width="179" height="65"/>
+      </g>
+      <path id="mid" class="cls-5" d="M396.5,231h-85L37.5,0h321.63c20.64,0,37.37,16.73,37.37,37.37v193.63Z"/>
+      <path id="bot" class="cls-4" d="M.5,231h396v1.83c0,21.07-17.1,38.17-38.17,38.17H38.67c-21.07,0-38.17-17.1-38.17-38.17v-1.83h0Z"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Calque_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 271">
+  <defs>
+    <style>
+      .cls-1 {
+        opacity: .14;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        fill: #359846;
+      }
+
+      .cls-4 {
+        opacity: .18;
+      }
+
+      .cls-5 {
+        opacity: .1;
+      }
+
+      .cls-6 {
+        fill: #ef4f4e;
+      }
+    </style>
+  </defs>
+  <g id="swiss">
+    <g id="france">
+      <path id="left" class="cls-3" d="M37.59,0h89.41v270H37.59c-20.75,0-37.59-16.84-37.59-37.59V37.59C0,16.84,16.84,0,37.59,0Z"/>
+      <path id="right" class="cls-6" d="M306.59,0h89.41v270h-89.41c-20.75,0-37.59-16.84-37.59-37.59V37.59C269,16.84,285.84,0,306.59,0Z" transform="translate(665 270) rotate(-180)"/>
+      <rect id="mid" class="cls-2" x="127" y="0" width="142" height="270"/>
+      <path id="top" class="cls-1" d="M38,0h321.2C380.08,0,397,16.92,397,37.8v71.2L38,0Z"/>
+      <path id="mid-2" data-name="mid" class="cls-5" d="M397,231h-85L38,0h321.63C380.27,0,397,16.73,397,37.37v193.63Z"/>
+      <path id="bot" class="cls-4" d="M1,231h396v1.83c0,21.07-17.1,38.17-38.17,38.17H39.17c-21.07,0-38.17-17.1-38.17-38.17v-1.83h0Z"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,63 @@
+/* Styles pour la page machine */
+.machine-title {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin: 30px 0;
+    text-transform: uppercase;
+  }
+  
+  .machine-image-container {
+    background-color: var(--secondary-color);
+    border-radius: var(--border-radius-lg);
+    padding: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+    box-shadow: var(--shadow-light);
+    overflow: hidden;
+  }
+  
+  .machine-image-container img {
+    max-width: 100%;
+    height: auto;
+    transition: transform 0.5s ease;
+  }
+  
+  /* Responsive design pour les pages machine */
+  @media (min-width: 768px) {
+    .machine-title {
+      font-size: 32px;
+      margin: 40px 0;
+    }
+    
+    .machine-image-container {
+      padding: 30px;
+      margin-bottom: 40px;
+    }
+    
+    .accordion-container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    .cta-button {
+      max-width: 400px;
+      margin: 30px auto;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .machine-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .machine-image-container {
+      margin-bottom: 0;
+    }
+  }
+  
