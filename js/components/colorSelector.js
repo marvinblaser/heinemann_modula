@@ -48,7 +48,6 @@ function initColorSelector() {
             // Changer l'image si un chemin est défini pour cette couleur
             if (colorClass && colorImagePaths[colorClass]) {
                 // Afficher l'écran de chargement
-                loadingSpinner.style.display = 'block';
                 machineImage.style.opacity = '0.5';
 
                 // Changer l'image après un délai
@@ -56,7 +55,6 @@ function initColorSelector() {
                     machineImage.src = colorImagePaths[colorClass];
                     machineImage.onload = () => {
                         machineImage.style.opacity = '1';
-                        loadingSpinner.style.display = 'none'; // Masquer l'écran de chargement
                     };
                 }, 200);
             }
