@@ -18,10 +18,8 @@ function initAccordions() {
             // Ajuster la hauteur max
             if (this.classList.contains('active')) {
                 content.style.maxHeight = content.scrollHeight + 'px';
-                // console.log(`Accordéon ouvert: ${this.textContent}`); // Débogage
             } else {
                 content.style.maxHeight = '0';
-                // console.log(`Accordéon fermé: ${this.textContent}`); // Débogage
             }
         });
     });

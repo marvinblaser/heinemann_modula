@@ -18,8 +18,6 @@ function initColorSelector() {
         "color-ral3020": "assets/img/machines/modula-l/RAL3020.jpg",
         "color-ral5003": "assets/img/machines/modula-l/RAL5003.jpg",
         "color-ral5010": "assets/img/machines/modula-l/RAL5010.jpg",
-        "color-ral5014": "assets/img/machines/modula-l/RAL5014.jpg",
-        "color-ral5017": "assets/img/machines/modula-l/RAL5017.jpg",
         "color-ral5018": "assets/img/machines/modula-l/RAL5018.jpg",
         "color-ral5024": "assets/img/machines/modula-l/RAL5024.jpg",
         "color-ral6029": "assets/img/machines/modula-l/RAL6029.jpg",
@@ -49,12 +47,16 @@ function initColorSelector() {
 
             // Changer l'image si un chemin est défini pour cette couleur
             if (colorClass && colorImagePaths[colorClass]) {
-                // Option avec animation de fondu
+                // Afficher l'écran de chargement
+                loadingSpinner.style.display = 'block';
                 machineImage.style.opacity = '0.5';
+
+                // Changer l'image après un délai
                 setTimeout(() => {
                     machineImage.src = colorImagePaths[colorClass];
                     machineImage.onload = () => {
                         machineImage.style.opacity = '1';
+                        loadingSpinner.style.display = 'none'; // Masquer l'écran de chargement
                     };
                 }, 200);
             }

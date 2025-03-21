@@ -13,14 +13,10 @@ function initOptionsManager() {
     checkboxContainers.forEach(container => {
         const input = container.querySelector('input[type="checkbox"]');
 
-        // if (!input) return;
-
-        // Gérer le clic sur le conteneur
         container.addEventListener('click', function(e) {
             // Éviter de déclencher si le clic est directement sur l'input
             input.checked = !input.checked;
             if (e.target !== input) {
-
                 // Déclencher l'événement change pour les écouteurs éventuels
                 const event = new Event('change');
                 input.dispatchEvent(event);
