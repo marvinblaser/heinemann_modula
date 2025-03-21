@@ -10,7 +10,6 @@ function initNavigation() {
     const overlay = document.querySelector('.overlay');
     const settingsBtn = document.querySelector('.settings-btn');
     const settingsMenu = document.querySelector('.settings-menu');
-    const languageDropdown = document.querySelector('.language-dropdown');
 
     // Ouvrir le menu burger
     if (burgerBtn) {
@@ -51,22 +50,6 @@ function initNavigation() {
     document.addEventListener('click', function(e) {
         if (!settingsMenu.contains(e.target) && e.target !== settingsBtn) {
             settingsMenu.classList.remove('active');
-        }
-    });
-
-    // Ouvrir le menu de langue
-    const languageSelector = document.querySelector('.language-selector');
-    if (languageSelector) {
-        languageSelector.addEventListener('click', function(e) {
-            e.stopPropagation();
-            languageDropdown.classList.toggle('hide');
-        });
-    }
-
-    // Fermer le menu de langue au clic à l'extérieur
-    document.addEventListener('click', function(e) {
-        if (!languageDropdown.contains(e.target) && e.target !== languageSelector) {
-            languageDropdown.classList.add('hide');
         }
     });
 }
