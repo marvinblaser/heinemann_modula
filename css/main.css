@@ -36,6 +36,10 @@
     font-family: var(--font-main);
     color: var(--text-color);
     background-color: var(--light-bg);
+    /* background-image: url("../assets/img/background/background.avif");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat; */
     line-height: 1.5;
     max-width: 100%;
     overflow-x: hidden;

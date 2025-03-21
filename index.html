@@ -26,7 +26,6 @@
     </button>
     <div class="logo">
         <img class="logo-img" src="assets/logos/kbmed.svg" alt="KB MED">
-        <p class="logo-text">Medizintechnik</p>
     </div>
     <button class="burger-btn" id="burgerBtn" aria-label="Menu">
         <span></span>
@@ -212,64 +211,48 @@
         <!-- Étape 1: Coordonnées -->
         <div class="modal-step active" id="modalStep1">
           <h2 class="modal-title">Vos coordonnées</h2>
-          <form id="userInfoForm" data-js-submit="true">
+          <!-- Formulaire d'informations utilisateur -->
+          <form id="userInfoForm">
             <div class="form-group">
-              <label for="name">Nom</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                class="form-control"
-                required
-              />
+                <label for="name">Nom</label>
+                <input type="text" id="name" name="name" class="form-control" required>
             </div>
             <div class="form-group">
-              <label for="firstname">Prénom</label>
-              <input
-                type="text"
-                id="firstname"
-                name="firstname"
-                class="form-control"
-                required
-              />
+                <label for="firstname">Prénom</label>
+                <input type="text" id="firstname" name="firstname" class="form-control" required>
             </div>
             <div class="form-group">
-              <label for="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                class="form-control"
-                required
-              />
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" required>
             </div>
-            <button type="button" class="button button--full next-btn">
-              Suivant
-            </button>
-          </form>
+            <input type="hidden" id="selectedColor" name="selectedColor" value="">
+            <input type="hidden" id="selectedOptions" name="selectedOptions" value="">
+            <button type="button" class="button button--full" id="sendEmailBtn">Envoyer</button>
+        </form>
+        <div class="loading-spinner hide"></div>
+
         </div>
 
         <!-- Étape 2: Récapitulatif -->
         <div class="modal-step" id="modalStep2">
           <h2 class="modal-title">Récapitulatif</h2>
           <div class="recap-container">
-            <div class="color-recap">
-              <h3>Couleur choisie:</h3>
-              <p id="selectedColor">Blanc</p>
-            </div>
-            <div class="options-recap">
-              <h3>Options choisies:</h3>
-              <ul id="selectedOptions">
-                <!-- Options sélectionnées générées dynamiquement -->
-              </ul>
-            </div>
+              <div class="color-recap">
+                  <h3>Couleur choisie:</h3>
+                  <div class="color-display" id="colorDisplay" style="display: inline-block; width: 20px; height: 20px; border-radius: 4px; margin-left: 10px;"></div>
+                  <p id="selectedColor">Blanc</p>
+              </div>
+              <div class="options-recap">
+                  <h3>Options choisies:</h3>
+                  <ul id="selectedOptions">
+                      <!-- Options sélectionnées générées dynamiquement -->
+                  </ul>
+              </div>
           </div>
           <div class="loading-spinner hide"></div>
           <div class="form-actions">
-            <button type="button" class="button button--secondary back-btn">
-              Retour
-            </button>
-            <button type="button" class="button confirm-btn">Confirmer</button>
+              <button type="button" class="button button--secondary back-btn">Retour</button>
+              <button type="button" class="button confirm-btn">Confirmer</button>
           </div>
         </div>
 
@@ -294,6 +277,7 @@
     <script src="js/components/colorSelector.js"></script>
     <script src="js/components/optionsManager.js"></script>
     <script src="js/components/languageSwitch.js"></script>
+    <script src="js/components/formspree.js"></script>
     <script src="js/utils/formValidation.js"></script>
     <script src="js/utils/emailSender.js"></script>
   </body>

@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log('KB MED Site loaded');
   
   // Initialiser EmailJS (si utilisé)
-  // emailjs.init("YOUR_USER_ID");
+  // emailjs.init("atUIFstP0TCmRcmjx");
   
   // Initialisation des composants
   // initSettingsMenu();

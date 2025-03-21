@@ -3,7 +3,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
+    padding: 25px 20px;
     background-color: var(--light-bg);
     box-shadow: var(--shadow-light);
     position: relative;
@@ -21,6 +21,8 @@
     align-items: center;
     cursor: pointer;
     transition: background-color 0.2s;
+    -webkit-box-shadow: inset 0px 0px 15px 4px rgba(0,0,0,0.21); 
+    box-shadow: inset 0px 0px 15px 4px rgba(0,0,0,0.1);
   }
   
   .settings-btn:hover {
@@ -51,15 +53,19 @@
   .burger-btn {
     width: 50px;
     height: 50px;
+    padding: 12px;
     background-color: #f7f7f7;
     border: none;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: end;
     cursor: pointer;
+    gap: 2px;
     transition: background-color 0.2s;
+    -webkit-box-shadow: inset 0px 0px 15px 4px rgba(0,0,0,0.21); 
+    box-shadow: inset 0px 0px 15px 4px rgba(0,0,0,0.1);
   }
   
   .burger-btn:hover {
@@ -73,6 +79,13 @@
     background-color: var(--primary-color);
     margin: 2px 0;
     transition: transform 0.3s, opacity 0.3s;
+  }
+
+  .burger-btn span:nth-child(2) {
+    width: 18px;
+  }
+  .burger-btn span:nth-child(3) {
+    width: 14px;
   }
   
   .burger-btn.active span:nth-child(1) {
@@ -128,6 +141,7 @@
     justify-content: center;
     align-items: center;
     width: 40px;
+    padding: 5px;
     height: 40px;
     background-color: #f2f2f2;
     border-radius: 8px;
@@ -139,6 +153,7 @@
     align-items: center;
     width: 40px;
     height: 40px;
+    padding: 7px;
     background-color: #f2f2f2;
     border-radius: 8px;
   }

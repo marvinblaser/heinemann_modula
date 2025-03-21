@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const forms = document.querySelectorAll('form');
     
     forms.forEach(form => {
-      // Ajouter des validations personnalisées si nécessaire
-      addCustomValidations(form);
+      // // Ajouter des validations personnalisées si nécessaire
+      // addCustomValidations(form);
       
       // Gérer la soumission du formulaire
       form.addEventListener('submit', function(e) {
@@ -67,15 +67,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
   
-  // Ajouter des validations personnalisées
-  function addCustomValidations(form) {
-    const emailInputs = form.querySelectorAll('input[type="email"]');
-    
-    emailInputs.forEach(input => {
-      input.pattern = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}";
-      input.title = "Veuillez entrer une adresse email valide";
-    });
-  }
+// main.js - Validation des formulaires
+// function addCustomValidations(form) {
+//   const emailInputs = form.querySelectorAll('input[type="email"]');
+
+//   emailInputs.forEach(input => {
+//       // Échappez le point dans le pattern
+//       input.pattern = "^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"; 
+//       input.title = "Veuillez entrer une adresse email valide";
+//   });
+// }
+
+
   
   // Valider un formulaire entier
   function validateForm(form) {
@@ -151,20 +154,19 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Mettre à jour la récapitulation avant confirmation
   function updateRecapitulation() {
-    // Récupérer les éléments nécessaires
     const selectedColor = document.getElementById('selectedColor');
+    const colorDisplay = document.getElementById('colorDisplay'); // Nouveau carré de couleur
     const selectedOptions = document.getElementById('selectedOptions');
-    
+
     if (!selectedColor || !selectedOptions) return;
-    
+
     // Récupérer la couleur active
     const activeColorOption = document.querySelector('.color-option.active');
     if (activeColorOption) {
-      // Extraire le nom de la couleur depuis la classe CSS
-      const colorClass = Array.from(activeColorOption.classList)
-        .find(cls => cls.startsWith('color-'));
-      
-      if (colorClass) {
+        // Extraire le nom de la couleur depuis la classe CSS
+        const colorClass = Array.from(activeColorOption.classList)
+            .find(cls => cls.startsWith('color-'));
+
         // Mapper la classe CSS vers un nom lisible
         const colorMap = {
           'color-ral1001': 'RAL1001',
@@ -189,21 +191,22 @@ document.addEventListener('DOMContentLoaded', function() {
           'color-ral9010': 'RAL9010',
           'color-ral9016': 'RAL9016'
         };
-        
+
         selectedColor.textContent = colorMap[colorClass] || 'Non spécifiée';
-      }
+        
+        // Changer la couleur du carré
+        colorDisplay.style.backgroundColor = colorClass.replace('color-', ''); // Utiliser la classe pour définir la couleur
     }
-    
+
     // Vider la liste des options
     selectedOptions.innerHTML = '';
-    
+
     // Récupérer les options sélectionnées
     const checkedOptions = document.querySelectorAll('.checkbox-container input[type="checkbox"]:checked');
     checkedOptions.forEach(option => {
-      const label = option.closest('.checkbox-container').querySelector('.label').textContent;
-      const listItem = document.createElement('li');
-      listItem.textContent = label;
-      selectedOptions.appendChild(listItem);
+        const label = option.closest('.checkbox-container').querySelector('.label').textContent;
+        const listItem = document.createElement('li');
+        listItem.textContent = label;
+        selectedOptions.appendChild(listItem);
     });
   }
-  
