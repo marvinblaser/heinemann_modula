@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Mettre à jour la récapitulation avant confirmation
   function updateRecapitulation() {
     const selectedColor = document.getElementById('selectedColor');
-    const colorDisplay = document.getElementById('colorDisplay'); // Nouveau carré de couleur
+    // const colorDisplay = document.getElementById('colorDisplay'); // Nouveau carré de couleur
     const selectedOptions = document.getElementById('selectedOptions');
 
     if (!selectedColor || !selectedOptions) return;
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
         selectedColor.textContent = colorMap[colorClass] || 'Non spécifiée';
         
         // Changer la couleur du carré
-        colorDisplay.style.backgroundColor = colorClass.replace('color-', ''); // Utiliser la classe pour définir la couleur
+        // colorDisplay.style.backgroundColor = colorClass.replace('color-', ''); // Utiliser la classe pour définir la couleur
     }
 
     // Vider la liste des options
