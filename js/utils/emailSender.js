@@ -34,14 +34,13 @@ function sendConfigurationEmail() {
     // Récupérer la langue sélectionnée
     const selectedLanguage = currentLanguage; // Utiliser la langue actuelle
 
+    // Préparer le contenu de l'email en fonction de la langue
+    const emailContent = prepareEmailContent(selectedLanguage, firstname, selectedColor, selectedOptions);
+
     const templateParams = {
         to_name: `${firstname} ${name}`,
         to_email: email,
-        machine_model: 'MODULA L',
-        selected_color: selectedColor,
-        selected_options: selectedOptions,
-        date: new Date().toLocaleDateString(),
-        language: selectedLanguage // Ajout de la langue sélectionnée
+        message: emailContent // Utiliser le contenu préparé
     };
 
     emailjs.send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, templateParams)
@@ -53,3 +52,96 @@ function sendConfigurationEmail() {
             completeEmailSending(false);
         });
 }
+
+// Fonction pour préparer le contenu de l'email
+function prepareEmailContent(language, firstname, selectedColor, selectedOptions) {
+    const messages = {
+        fr: {
+            subject: '🎉 Votre configuration a été enregistrée !',
+            greeting: `Bonjour ${firstname},\n`,
+            confirmation: 'Nous confirmons que votre configuration a été enregistrée.\n',
+            contact: 'Nous vous contacterons dès que possible.\n',
+            thankYou: 'Merci pour votre intérêt.\n',
+            seeYouSoon: 'À bientôt !\n',
+            recap: 'Récapitulatif de votre commande :\n',
+            colorChosen: `Couleur choisie : ${selectedColor}\n`,
+            optionsChosen: `Options choisies : ${selectedOptions}\n`,
+            companyInfo: `Gewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch`
+        },
+        de: {
+            subject: '🎉 Ihre Konfiguration wurde gespeichert!',
+            greeting: `Hallo ${firstname},\n`,
+            confirmation: 'Wir bestätigen, dass Ihre Konfiguration gespeichert wurde.\n',
+            contact: 'Wir werden Sie so schnell wie möglich kontaktieren.\n',
+            thankYou: 'Danke für Ihr Interesse.\n',
+            seeYouSoon: 'Bis bald!\n',
+            recap: 'Zusammenfassung Ihrer Bestellung:\n',
+            colorChosen: `Gewählte Farbe: ${selectedColor}\n`,
+            optionsChosen: `Gewählte Optionen: ${selectedOptions}\n`,
+            companyInfo: `Gewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch`
+        },
+        it: {
+            subject: '🎉 La tua configurazione è stata salvata!',
+            greeting: `Ciao ${firstname},\n`,
+            confirmation: 'Confermiamo che la tua configurazione è stata salvata.\n',
+            contact: 'Ti contatteremo il prima possibile.\n',
+            thankYou: 'Grazie per il tuo interesse.\n',
+            seeYouSoon: 'A presto!\n',
+            recap: 'Riepilogo del tuo ordine:\n',
+            colorChosen: `Colore scelto: ${selectedColor}\n`,
+            optionsChosen: `Opzioni scelte: ${selectedOptions}\n`,
+            companyInfo: `Gewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch`
+        },
+        en: {
+            subject: '🎉 Your configuration has been saved!',
+            greeting: `Hello ${firstname},\n`,
+            confirmation: 'We confirm that your configuration has been saved.\n',
+            contact: 'We will contact you as soon as possible.\n',
+            thankYou: 'Thank you for your interest.\n',
+            seeYouSoon: 'See you soon!\n',
+            recap: 'Summary of your order:\n',
+            colorChosen: `Color chosen: ${selectedColor}\n`,
+            optionsChosen: `Options chosen: ${selectedOptions}\n`,
+            companyInfo: `Gewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch`
+        }
+    };
+
+    const msg = messages[language]; // Accéder directement à l'objet de la langue
+    return `
+        ${msg.subject}\n
+        ${msg.greeting}
+        ${msg.confirmation}
+        ${msg.contact}
+        ${msg.thankYou}
+        ${msg.seeYouSoon}
+        ${msg.recap}
+        ${msg.colorChosen}
+        ${msg.optionsChosen}
+        ${msg.companyInfo}
+    `;
+}
+
+
+
+
+
+function completeEmailSending(success) {
+    const loadingSpinner = document.querySelector('.loading-spinner');
+    if (loadingSpinner) {
+        loadingSpinner.classList.add('hide');
+    }
+
+    const step2 = document.getElementById('modalStep2');
+    const step3 = document.getElementById('modalStep3');
+
+    if (success) {
+        if (step2 && step3) {
+            step2.classList.remove('active');
+            step3.classList.add('active');
+        }
+    } else {
+        alert('Une erreur est survenue lors de l\'envoi de l\'email. Veuillez réessayer.');
+    }
+}
+
+console.log(selectedColor)

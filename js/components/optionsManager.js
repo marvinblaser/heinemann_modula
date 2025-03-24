@@ -56,3 +56,25 @@ function initOptionsManager() {
         });
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const closeModalBtn = document.querySelector('.modal-close');
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', function() {
+            const configModal = document.getElementById('configModal');
+            if (configModal) {
+                configModal.classList.remove('active');
+            }
+        });
+    }
+
+    const closeButton = document.querySelector('.close-btn');
+    if (closeButton) {
+        closeButton.addEventListener('click', function() {
+            const configModal = document.getElementById('configModal');
+            if (configModal) {
+                configModal.classList.remove('active');
+            }
+        });
+    }
+});

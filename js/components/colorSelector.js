@@ -18,6 +18,8 @@ function initColorSelector() {
         "color-ral3020": "assets/img/machines/modula-l/RAL3020.jpg",
         "color-ral5003": "assets/img/machines/modula-l/RAL5003.jpg",
         "color-ral5010": "assets/img/machines/modula-l/RAL5010.jpg",
+        "color-ral5014": "assets/img/machines/modula-l/RAL5014.jpg",
+        "color-ral5017": "assets/img/machines/modula-l/RAL5017.jpg",
         "color-ral5018": "assets/img/machines/modula-l/RAL5018.jpg",
         "color-ral5024": "assets/img/machines/modula-l/RAL5024.jpg",
         "color-ral6029": "assets/img/machines/modula-l/RAL6029.jpg",
