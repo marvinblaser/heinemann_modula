@@ -11,7 +11,7 @@ function initAccordions() {
 
         header.addEventListener('click', function() {
             const content = this.nextElementSibling;
-
+            console.log("ok")
             // Toggle l'état actif
             this.classList.toggle('active');
             content.classList.toggle('active');

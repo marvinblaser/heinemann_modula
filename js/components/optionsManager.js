@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function initOptionsManager() {
     const checkboxContainers = document.querySelectorAll('.checkbox-container');
-    const saveConfigBtn = document.querySelector('.save-config-btn');
+    const saveConfigBtn = document.querySelector('.save-config-btn'); 
 
     if (!checkboxContainers.length) return;
 
@@ -27,6 +27,7 @@ function initOptionsManager() {
     // Gestion du bouton d'enregistrement de configuration
     if (saveConfigBtn) {
         saveConfigBtn.addEventListener('click', function() {
+            console.log("ok")
             // Vérifier si au moins une option est sélectionnée
             const checkedOptions = document.querySelectorAll('.checkbox-container input[type="checkbox"]:checked');
 

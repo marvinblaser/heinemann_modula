@@ -158,3 +158,8 @@
 .accordion-header.active .arrow {
   transform: rotate(180deg); /* Rotation de la flèche lorsque l'accordéon est ouvert */
 }
+
+#selectedOptions{
+  max-height: 300px;
+  overflow: auto;
+}
