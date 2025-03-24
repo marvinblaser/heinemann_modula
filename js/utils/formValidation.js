@@ -154,7 +154,7 @@ function updateRecapitulation() {
       const colorMap = {
           'color-ral1001': 'RAL1001',
           'color-ral1013': 'RAL1013',
-          'color-ral1024': 'RAL1028',
+          'color-ral1028': 'RAL1028',
           'color-ral3004': 'RAL3004',
           'color-ral3020': 'RAL3020',
           'color-ral5003': 'RAL5003',
@@ -207,6 +207,7 @@ function getColorFromClass(colorClass) {
       'color-ral1001': '#C69C6D',
       'color-ral1013': '#EAE8D2',
       'color-ral1024': '#DDAA00',
+      'color-ral1028': '#FFB400',
       'color-ral3004': '#6A2C2D',
       'color-ral3020': '#C72C3B',
       'color-ral5003': '#1D1F2A',

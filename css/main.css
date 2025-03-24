@@ -149,3 +149,12 @@
   .color-dark {
     filter: brightness(0.7); /* Fonce la couleur */
 }
+
+.arrow {
+  font-size: 16px; /* Taille de la flèche */
+  transition: transform 0.3s; /* Animation pour le changement d'état */
+}
+
+.accordion-header.active .arrow {
+  transform: rotate(180deg); /* Rotation de la flèche lorsque l'accordéon est ouvert */
+}

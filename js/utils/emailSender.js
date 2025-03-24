@@ -70,7 +70,7 @@ function prepareEmailContent(language, firstname, selectedColor, selectedOptions
         },
         de: {
             subject: '🎉 Ihre Konfiguration wurde gespeichert!',
-            greeting: `Hallo ${firstname},\n`,
+            greeting: `Guten Tag ${firstname},\n`,
             confirmation: 'Wir bestätigen, dass Ihre Konfiguration gespeichert wurde.\n',
             contact: 'Wir werden Sie so schnell wie möglich kontaktieren.\n',
             thankYou: 'Danke für Ihr Interesse.\n',
@@ -82,7 +82,7 @@ function prepareEmailContent(language, firstname, selectedColor, selectedOptions
         },
         it: {
             subject: '🎉 La tua configurazione è stata salvata!',
-            greeting: `Ciao ${firstname},\n`,
+            greeting: `Buongiorno ${firstname},\n`,
             confirmation: 'Confermiamo che la tua configurazione è stata salvata.\n',
             contact: 'Ti contatteremo il prima possibile.\n',
             thankYou: 'Grazie per il tuo interesse.\n',
@@ -92,18 +92,6 @@ function prepareEmailContent(language, firstname, selectedColor, selectedOptions
             optionsChosen: `Opzioni scelte: ${selectedOptions}\n`,
             companyInfo: `Gewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch`
         },
-        en: {
-            subject: '🎉 Your configuration has been saved!',
-            greeting: `Hello ${firstname},\n`,
-            confirmation: 'We confirm that your configuration has been saved.\n',
-            contact: 'We will contact you as soon as possible.\n',
-            thankYou: 'Thank you for your interest.\n',
-            seeYouSoon: 'See you soon!\n',
-            recap: 'Summary of your order:\n',
-            colorChosen: `Color chosen: ${selectedColor}\n`,
-            optionsChosen: `Options chosen: ${selectedOptions}\n`,
-            companyInfo: `Gewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch`
-        }
     };
 
     const msg = messages[language]; // Accéder directement à l'objet de la langue

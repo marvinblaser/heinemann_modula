@@ -53,18 +53,15 @@
                 <img src="assets/icons/flag-de.svg" alt="Allemand" data-lang="de" />
             </div>
             <div class="language-selector">
-                <img src="assets/icons/flag-en.svg" alt="Anglais" data-lang="en" />
-            </div>
-            <div class="language-selector">
                 <img src="assets/icons/flag-it.svg" alt="Italie" data-lang="it" />
             </div>
         </div>
-        <div class="settings-item">
+        <!-- <div class="settings-item">
             <div class="settings-label">Thème</div>
             <div class="theme-selector">
                 <img src="assets/icons/sun.svg" alt="Thème clair" />
             </div>
-        </div>
+        </div> -->
     </div>
 
     <!-- Overlay pour les modales -->
@@ -72,145 +69,147 @@
 
     <!-- Contenu principal -->
     <main>
-        <h1 class="machine-title" data-translate="accordion.customize">MODULA L</h1>
+        <h1 class="machine-title" data-translate="navigation.machine1">MODULA L</h1>
 
         <div class="machine-image-container">
             <img id="machineImage" src="assets/img/machines/modula-l/RAL9010.jpg" alt="Machine Modula L" />
         </div>
 
         <!-- Accordéons -->
-        <div class="accordion-container">
-            <div class="accordion-item">
-                <button class="accordion-header" data-translate="accordion.colors">
-                    Changer la couleur
-                    <span class="arrow"></span>
-                </button>
-                <div class="accordion-content">
-                    <div class="color-grid">
-                        <div class="color-ral1001 color-option"></div>
-                        <div class="color-ral1013 color-option"></div>
-                        <div class="color-ral1028 color-option"></div>
-                        <div class="color-ral3004 color-option"></div>
-                        <div class="color-ral3020 color-option"></div>
-                        <div class="color-ral5003 color-option"></div>
-                        <div class="color-ral5010 color-option"></div>
-                        <div class="color-ral5014 color-option"></div>
-                        <div class="color-ral5017 color-option"></div>
-                        <div class="color-ral5018 color-option"></div>
-                        <div class="color-ral5024 color-option"></div>
-                        <div class="color-ral6029 color-option"></div>
-                        <div class="color-ral6034 color-option"></div>
-                        <div class="color-ral7011 color-option"></div>
-                        <div class="color-ral7016 color-option"></div>
-                        <div class="color-ral7032 color-option"></div>
-                        <div class="color-ral7035 color-option"></div>
-                        <div class="color-ral7044 color-option"></div>
-                        <div class="color-ral7045 color-option"></div>
-                        <div class="color-ral9010 color-option active"></div>
-                        <div class="color-ral9016 color-option"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <button class="accordion-header" data-translate="accordion.details">
-                    Détails techniques
-                    <span class="arrow"></span>
-                </button>
-                <div class="accordion-content">
-                    <ul class="tech-details">
-                        <li data-translate="technical.dimensions">Dimensions: 120 x 80 x 60 cm</li>
-                        <li data-translate="technical.weight">Poids: 85 kg</li>
-                        <li data-translate="technical.power">Puissance: 2000W</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <button class="accordion-header" data-translate="accordion.customize">
-                    Personnaliser ma machine
-                    <span class="arrow"></span>
-                </button>
-                <div class="accordion-content">
-                    <form id="optionsForm">
-                        <div class="options-list">
-                            <label class="checkbox-container">
-                                <input type="checkbox" name="option1" value="Option 1" />
-                                <div class="checkbox"></div>
-                                <div class="label" data-translate="options.option1">Option 1</div>
-                            </label>
-                            <label class="checkbox-container">
-                                <input type="checkbox" name="option2" value="Option 2" />
-                                <div class="checkbox"></div>
-                                <div class="label" data-translate="options.option2">Option 2</div>
-                            </label>
-                            <label class="checkbox-container">
-                                <input type="checkbox" name="option3" value="Option 3" />
-                                <div class="checkbox"></div>
-                                <div class="label" data-translate="options.option3">Option 3</div>
-                            </label>
-                        </div>
-                        <button type="button" class="save-config-btn" data-translate="options.saveConfig">Enregistrer ma configuration</button>
-                    </form>
-                </div>
+        <!-- Accordéons -->
+<div class="accordion-container">
+    <div class="accordion-item">
+        <button class="accordion-header" data-translate="accordion.colors">
+            Changer la couleur
+            <span class="arrow" style="float: right;">▼</span> <!-- Chevrons ajoutés -->
+        </button>
+        <div class="accordion-content">
+            <div class="color-grid">
+                <div class="color-ral1001 color-option"></div>
+                <div class="color-ral1013 color-option"></div>
+                <div class="color-ral1028 color-option"></div>
+                <div class="color-ral3004 color-option"></div>
+                <div class="color-ral3020 color-option"></div>
+                <div class="color-ral5003 color-option"></div>
+                <div class="color-ral5010 color-option"></div>
+                <div class="color-ral5014 color-option"></div>
+                <div class="color-ral5017 color-option"></div>
+                <div class="color-ral5018 color-option"></div>
+                <div class="color-ral5024 color-option"></div>
+                <div class="color-ral6029 color-option"></div>
+                <div class="color-ral6034 color-option"></div>
+                <div class="color-ral7011 color-option"></div>
+                <div class="color-ral7016 color-option"></div>
+                <div class="color-ral7032 color-option"></div>
+                <div class="color-ral7035 color-option"></div>
+                <div class="color-ral7044 color-option"></div>
+                <div class="color-ral7045 color-option"></div>
+                <div class="color-ral9010 color-option active"></div>
+                <div class="color-ral9016 color-option"></div>
             </div>
         </div>
+    </div>
+
+    <div class="accordion-item">
+        <button class="accordion-header" data-translate="accordion.details">
+            Détails techniques
+            <span class="arrow" style="float: right;">▼</span> <!-- Chevrons ajoutés -->
+        </button>
+        <div class="accordion-content">
+            <ul class="tech-details">
+                <li data-translate="technical.dimensions">Dimensions: 120 x 80 x 60 cm</li>
+                <li data-translate="technical.weight">Poids: 85 kg</li>
+                <li data-translate="technical.power">Puissance: 2000W</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <button class="accordion-header" data-translate="accordion.customize">
+            Personnaliser ma machine
+            <span class="arrow" style="float: right;">▼</span> <!-- Chevrons ajoutés -->
+        </button>
+        <div class="accordion-content">
+            <form id="optionsForm">
+                <div class="options-list">
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="option1" value="Option 1" />
+                        <div class="checkbox"></div>
+                        <div class="label" data-translate="options.option1">Option 1</div>
+                    </label>
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="option2" value="Option 2" />
+                        <div class="checkbox"></div>
+                        <div class="label" data-translate="options.option2">Option 2</div>
+                    </label>
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="option3" value="Option 3" />
+                        <div class="checkbox"></div>
+                        <div class="label" data-translate="options.option3">Option 3</div>
+                    </label>
+                </div>
+                <button type="button" class="save-config-btn" data-translate="options.saveConfig">Enregistrer ma configuration</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 
         <button class="cta-button" onclick="window.location.href='catalogue.html'" data-translate="general.seeMore">Voir le catalogue</button>
     </main>
 
     <!-- Modal de configuration -->
-    <div class="modal" id="configModal">
-        <div class="modal-content">
-            <button class="modal-close">&times;</button>
-            <div class="modal-step active" id="modalStep1">
-                <h2 class="modal-title" data-translate="modal.step1Title">Vos coordonnées</h2>
-                <form id="userInfoForm" data-js-submit="true">
-                    <div class="form-group">
-                        <label for="name" data-translate="form.name">Nom</label>
-                        <input type="text" id="name" name="name" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="firstname" data-translate="form.firstname">Prénom</label>
-                        <input type="text" id="firstname" name="firstname" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email" data-translate="form.email">Email</label>
-                        <input type="email" id="email" name="email" class="form-control" required>
-                    </div>
-                    <button type="button" class="button button--full next-btn" data-translate="form.next">Suivant</button>
-                </form>
-            </div>
-            <div class="modal-step" id="modalStep2">
-                <h2 class="modal-title" data-translate="modal.step2Title">Récapitulatif</h2>
-                <div class="recap-container">
-                    <div class="color-recap">
-                        <h3 data-translate="modal.colorChosen">Couleur choisie:</h3>
-                        <p id="selectedColor">Blanc</p>
-                    </div>
-                    <div class="options-recap">
-                        <h3 data-translate="modal.optionsChosen">Options choisies:</h3>
-                        <ul id="selectedOptions">
-                            <!-- Options sélectionnées générées dynamiquement -->
-                        </ul>
-                    </div>
+<div class="modal" id="configModal">
+    <div class="modal-content">
+        <button class="modal-close">&times;</button>
+        <div class="modal-step active" id="modalStep1">
+            <h2 class="modal-title" data-translate="modal.step1Title">Vos coordonnées</h2>
+            <form id="userInfoForm" data-js-submit="true">
+                <div class="form-group">
+                    <label for="name" data-translate="form.name">Nom</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
                 </div>
-                <div class="loading-spinner hide"></div>
-                <div class="form-actions">
-                    <button type="button" class="button button--secondary back-btn" data-translate="form.back">Retour</button>
-                    <button type="button" class="button confirm-btn" data-translate="form.confirm">Confirmer</button>
+                <div class="form-group">
+                    <label for="firstname" data-translate="form.firstname">Prénom</label>
+                    <input type="text" id="firstname" name="firstname" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="email" data-translate="form.email">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+                <button type="button" class="button button--full next-btn" data-translate="form.next">Suivant</button>
+            </form>
+        </div>
+        <div class="modal-step" id="modalStep2">
+            <h2 class="modal-title" data-translate="modal.step2Title">Récapitulatif</h2>
+            <div class="recap-container">
+                <div class="color-recap">
+                    <h3 data-translate="modal.colorChosen">Couleur choisie:</h3>
+                    <p id="selectedColor">Blanc</p>
+                </div>
+                <div class="options-recap">
+                    <h3 data-translate="modal.optionsChosen">Options choisies:</h3>
+                    <ul id="selectedOptions">
+                        <!-- Options sélectionnées générées dynamiquement -->
+                    </ul>
                 </div>
             </div>
-            <div class="modal-step" id="modalStep3">
-                <h2 class="modal-title" data-translate="modal.step3Title">Configuration enregistrée</h2>
-                <p class="text-center" data-translate="modal.thankYou">Merci! Votre configuration a été enregistrée.</p>
-                <p class="text-center" data-translate="modal.emailSent">Un email récapitulatif vous a été envoyé.</p>
-                <p style="margin-bottom: 20px;"></p> <!-- Espace ajouté -->
-                <button type="button" class="button button--full close-btn" data-translate="form.close">Fermer</button>
+            <div class="loading-spinner hide"></div>
+            <div class="form-actions">
+                <button type="button" class="button button--secondary back-btn" data-translate="form.back">Retour</button>
+                <button type="button" class="button confirm-btn" data-translate="form.confirm">Confirmer</button>
             </div>
-            
+        </div>
+        <div class="modal-step" id="modalStep3">
+            <h2 class="modal-title" data-translate="modal.step3Title">Configuration enregistrée</h2>
+            <p class="text-center" data-translate="modal.thankYou">Merci! Votre configuration a été enregistrée.</p>
+            <p class="text-center" data-translate="modal.emailSent">Un email récapitulatif vous a été envoyé.</p>
+            <p style="margin-bottom: 20px;"></p>
+            <button type="button" class="button button--full close-btn" data-translate="form.close">Fermer</button>
         </div>
     </div>
+</div>
+
 
     <!-- Footer -->
     <footer class="main-footer">

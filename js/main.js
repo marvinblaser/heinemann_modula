@@ -7,194 +7,164 @@ const translations = {
         seeMore: {
             fr: "Voir le catalogue",
             de: "Katalog ansehen",
-            it: "Vedi il catalogo",
-            en: "See the catalogue"
+            it: "Vedi il catalogo"
         },
         follow: {
             fr: "Suivez nous là-bas :",
             de: "Folgen Sie uns hier :",
-            it: "Seguici qui :",
-            en: "Follow us there :"
+            it: "Seguici qui :"
         },
         copyright: {
             fr: "© KBMedizintechnik GmbH",
             de: "© KBMedizinTechnik GmbH",
-            it: "© KBMedizinTechnik GmbH",
-            en: "© KBMedizinTechnik GmbH"
+            it: "© KBMedizinTechnik GmbH"
         }
     },
     navigation: {
         machine1: {
-            fr: "Modula L",
-            de: "Modula L",
-            it: "Modula L",
-            en: "Modula L"
+            fr: "MODULA L",
+            de: "MODULA L",
+            it: "MODULA L"
         },
         machine2: {
-            fr: "Modula M",
-            de: "Modula M",
-            it: "Modula M",
-            en: "Modula M"
+            fr: "MODULA M",
+            de: "MODULA M",
+            it: "MODULA M"
         },
         catalogue: {
-            fr: "Catalogue",
-            de: "Katalog",
-            it: "Catalogo",
-            en: "Catalogue"
+            fr: "CATALOGUE",
+            de: "KATALOG",
+            it: "CATALOGO"
         }
     },
     accordion: {
         colors: {
             fr: "Changer la couleur",
             de: "Farbe ändern",
-            it: "Cambia colore",
-            en: "Change color"
+            it: "Cambia colore"
         },
         details: {
             fr: "Détails techniques",
             de: "Technische Details",
-            it: "Dettagli tecnici",
-            en: "Technical details"
+            it: "Dettagli tecnici"
         },
         customize: {
             fr: "Personnaliser ma machine",
             de: "Meine Maschine anpassen",
-            it: "Personalizza la mia macchina",
-            en: "Customize my machine"
+            it: "Personalizza la mia macchina"
         }
     },
     technical: {
         dimensions: {
-            fr: "Dimensions",
-            de: "Abmessungen",
-            it: "Dimensioni",
-            en: "Dimensions"
+            fr: "Dimensions : 120 x 80 x 60 cm",
+            de: "Abmessungen : 120 x 80 x 60 cm",
+            it: "Dimensioni : 120 x 80 x 60 cm"
         },
         weight: {
-            fr: "Poids",
-            de: "Gewicht",
-            it: "Peso",
-            en: "Weight"
+            fr: "Poids : 85 kg",
+            de: "Gewicht : 85 kg",
+            it: "Peso : 85 kg"
         },
         power: {
-            fr: "Puissance",
-            de: "Leistung",
-            it: "Potenza",
-            en: "Power"
+            fr: "Puissance : 2000W",
+            de: "Leistung : 2000W",
+            it: "Potenza : 2000W"
         }
     },
     options: {
         option1: {
             fr: "Option 1",
             de: "Option 1",
-            it: "Opzione 1",
-            en: "Option 1"
+            it: "Opzione 1"
         },
         option2: {
             fr: "Option 2",
             de: "Option 2",
-            it: "Opzione 2",
-            en: "Option 2"
+            it: "Opzione 2"
         },
         option3: {
             fr: "Option 3",
             de: "Option 3",
             it: "Opzione 3",
-            en: "Option 3"
         },
         saveConfig: {
             fr: "Enregistrer ma configuration",
             de: "Konfiguration speichern",
-            it: "Salva la mia configurazione",
-            en: "Save my configuration"
+            it: "Salva la mia configurazione"
         }
     },
     form: {
         name: {
             fr: "Nom",
             de: "Name",
-            it: "Nome",
-            en: "Name"
+            it: "Nome"
         },
         firstname: {
             fr: "Prénom",
             de: "Vorname",
-            it: "Cognome",
-            en: "First name"
+            it: "Cognome"
         },
         email: {
             fr: "Email",
             de: "E-Mail",
-            it: "Email",
-            en: "Email"
+            it: "Email"
         },
         next: {
             fr: "Suivant",
             de: "Weiter",
-            it: "Avanti",
-            en: "Next"
+            it: "Avanti"
         },
         back: {
             fr: "Retour",
             de: "Zurück",
-            it: "Indietro",
-            en: "Back"
+            it: "Indietro"
         },
         confirm: {
             fr: "Confirmer",
             de: "Bestätigen",
-            it: "Conferma",
-            en: "Confirm"
+            it: "Conferma"
         },
         close: {
             fr: "Fermer",
             de: "Schließen",
-            it: "Chiudere",
-            en: "Close"
+            it: "Chiudere"
         }
     },
     modal: {
         step1Title: {
             fr: "Vos coordonnées",
             de: "Ihre Kontaktdaten",
-            it: "Le tue informazioni",
-            en: "Your details"
+            it: "Le tue informazioni"
         },
         step2Title: {
             fr: "Récapitulatif",
             de: "Zusammenfassung",
-            it: "Riepilogo",
-            en: "Summary"
+            it: "Riepilogo"
         },
         step3Title: {
             fr: "Configuration enregistrée",
             de: "Konfiguration gespeichert",
-            it: "Configurazione salvata",
-            en: "Configuration saved"
+            it: "Configurazione salvata"
         },
         colorChosen: {
             fr: "Couleur choisie:",
             de: "Gewählte Farbe:",
-            it: "Colore scelto:",
-            en: "Color chosen:"
+            it: "Colore scelto:"
         },
         optionsChosen: {
             fr: "Options choisies:",
             de: "Gewählte Optionen:",
-            it: "Opzioni scelte:",
-            en: "Options chosen:"
+            it: "Opzioni scelte:"
         },
         thankYou: {
             fr: "Merci! Votre configuration a été enregistrée.",
             de: "Danke! Ihre Konfiguration wurde gespeichert.",
-            it: "Grazie! La tua configurazione è stata salvata.",
-            en: "Thank you! Your configuration has been saved."
+            it: "Grazie! La tua configurazione è stata salvata."
         },
         emailSent: {
             fr: "Un email récapitulatif vous a été envoyé.",
             de: "Eine Zusammenfassungs-E-Mail wurde Ihnen gesendet.",
-            it: "Un'email riepilogativa ti è stata inviata.",
-            en: "A summary email has been sent to you."
+            it: "Un'email riepilogativa ti è stata inviata."
         }
     }
 };
