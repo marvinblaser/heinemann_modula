@@ -59,7 +59,7 @@ function prepareEmailContent(language, firstname, selectedColor, selectedOptions
         fr: {
             subject: '🎉 Votre configuration a été enregistrée !',
             greeting: `Bonjour ${firstname},\n`,
-            confirmation: 'Nous confirmons que votre configuration a été enregistrée.\n',
+            confirmation: 'Nous confirmons que votre configuration pour le MODULA M a été enregistrée.\n',
             contact: 'Nous vous contacterons dès que possible.\n',
             thankYou: 'Merci pour votre intérêt.\n',
             seeYouSoon: 'À bientôt !\n',
@@ -71,7 +71,7 @@ function prepareEmailContent(language, firstname, selectedColor, selectedOptions
         de: {
             subject: '🎉 Ihre Konfiguration wurde gespeichert!',
             greeting: `Guten Tag ${firstname},\n`,
-            confirmation: 'Wir bestätigen, dass Ihre Konfiguration gespeichert wurde.\n',
+            confirmation: 'Wir bestätigen, dass Ihre Konfiguration für MODULA M gespeichert wurde.\n',
             contact: 'Wir werden Sie so schnell wie möglich kontaktieren.\n',
             thankYou: 'Danke für Ihr Interesse.\n',
             seeYouSoon: 'Bis bald!\n',
@@ -83,7 +83,7 @@ function prepareEmailContent(language, firstname, selectedColor, selectedOptions
         it: {
             subject: '🎉 La tua configurazione è stata salvata!',
             greeting: `Buongiorno ${firstname},\n`,
-            confirmation: 'Confermiamo che la tua configurazione è stata salvata.\n',
+            confirmation: 'Confermiamo che la configurazione del MODULA M è stata salvata.\n',
             contact: 'Ti contatteremo il prima possibile.\n',
             thankYou: 'Grazie per il tuo interesse.\n',
             seeYouSoon: 'A presto!\n',
@@ -131,5 +131,3 @@ function completeEmailSending(success) {
         alert('Une erreur est survenue lors de l\'envoi de l\'email. Veuillez réessayer.');
     }
 }
-
-console.log(selectedColor)
