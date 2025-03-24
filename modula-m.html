@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KB MED - Modula L</title>
+    <title>KB MED - Modula M</title>
     <!-- CSS Styles -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components/header.css">
@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="css/components/forms.css">
     <link rel="stylesheet" href="css/components/modals.css">
     <link rel="stylesheet" href="css/pages/machine-page.css">
+    <link rel="shortcut icon" href="assets/icons/favicon.webp" type="image/x-icon">
     <!-- EmailJS -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
@@ -124,30 +125,17 @@
         </div>
     </div>
 
-    <div class="accordion-item">
+    <div class="accordion-item accordion-custom">
         <button class="accordion-header" data-translate="accordion.customize">
             Personnaliser ma machine
             <span class="arrow" style="float: right;">▼</span> <!-- Chevrons ajoutés -->
         </button>
         <div class="accordion-content">
             <form id="optionsForm">
-                <div class="options-list">
-                    <label class="checkbox-container">
-                        <input type="checkbox" name="option1" value="Option 1" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option1">Option 1</div>
-                    </label>
-                    <label class="checkbox-container">
-                        <input type="checkbox" name="option2" value="Option 2" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option2">Option 2</div>
-                    </label>
-                    <label class="checkbox-container">
-                        <input type="checkbox" name="option3" value="Option 3" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option3">Option 3</div>
-                    </label>
+                <div class="options-list" id="optionsList">
+                    <!-- Les options seront générées ici -->
                 </div>
+                
                 <button type="button" class="save-config-btn" data-translate="options.saveConfig">Enregistrer ma configuration</button>
             </form>
         </div>
@@ -234,5 +222,6 @@
     <script src="js/utils/formValidation.js"></script>
     <script src="js/utils/emailSenderM.js"></script>
     <script src="js/utils/languageSwitch.js"></script>
+    <script src="js/components/optionsGenerator.js"></script>
 </body>
 </html>
