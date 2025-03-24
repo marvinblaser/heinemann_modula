@@ -31,7 +31,7 @@ function initColorSelector() {
         "color-ral7044": "assets/img/machines/modula-m/RAL7044.jpg",
         "color-ral7045": "assets/img/machines/modula-m/RAL7045.jpg",
         "color-ral9010": "assets/img/machines/modula-m/RAL9010.jpg",
-        "color-ral9016": "assets/img/machines/modula-m/RAL9010.jpg"
+        "color-ral9016": "assets/img/machines/modula-m/RAL9016.jpg"
     };
 
     // Ajouter les écouteurs d'événements
