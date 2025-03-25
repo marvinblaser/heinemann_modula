@@ -1272,7 +1272,7 @@ ${msg.companyInfo}
         if (selectedColorElement) {
           selectedColor = selectedColorElement.textContent.trim();
         } else {
-          selectedColor = sessionStorage.getItem("selectedColor") || "Non défini";
+          selectedColor = sessionStorage.getItem("selectedColor") || "ral-9016";
         }
         // Mettre à jour le nom de la couleur dans le récapitulatif
         document.getElementById("colorName").textContent = selectedColor;
