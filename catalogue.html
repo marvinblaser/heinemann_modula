@@ -20,6 +20,9 @@
       type="image/x-icon"
     />
     <style>
+        main{
+            padding: 20px;
+        }
       .pdf-container {
         width: 100%;
         min-height: 400px; /* ajustez en fonction de votre design */
@@ -44,6 +47,11 @@
       embed {
         position: relative;
         z-index: 999;
+      }
+      catalogue-flex{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
       }
     </style>
   </head>
@@ -120,8 +128,10 @@
   height="600px"
 /> -->
 
-      <a href="assets/documents/catalogue.pdf" target="_blank"
-        ><button
+      <a href="assets/documents/catalogue.pdf" target="_blank" class="catalogue-flex"
+        >
+        <img src="assets/img/catalogue-img.png" alt="Première page du catalogue">
+        <button
           class="cta-button button"
           data-translate="general.seeMore"
         >
