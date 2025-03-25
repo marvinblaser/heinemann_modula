@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const closeOptionsBtn = document.getElementById("closeOptions");
 
   // Popup Coordonnées
-  const coordinatesModal = document.getElementById("coordinatesModal");
+  const coordinatesModal = document.querySelector("coordinatesModal");
   const closeCoordinatesBtn = document.getElementById("closeCoordinates");
 
   // Lors du clic sur "Valider mes options"
@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Fermer le popup des options
     optionsModal.classList.remove("active");
     // Afficher le popup des coordonnées
-    coordinatesModal.classList.add("active");
+    // coordinatesModal.classList.add("active");
   });
 
   // Fermer le popup Options si besoin

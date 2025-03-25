@@ -1,4 +1,25 @@
 // main.js - Gestion des traductions
+function changeLanguage(lang) {
+  currentLanguage = lang;
+  
+  // Parcours de tous les éléments qui ont l'attribut "data-translate"
+  document.querySelectorAll("[data-translate]").forEach((element) => {
+    const key = element.getAttribute("data-translate"); // ex: "general.seeMore"
+    const keys = key.split("."); // ex: ["general", "seeMore"]
+
+    let translationEntry = translations;
+    // Parcours de l'objet translations pour atteindre le niveau voulu
+    keys.forEach((k) => {
+      if (translationEntry) {
+        translationEntry = translationEntry[k];
+      }
+    });
+    // Si la traduction pour la langue demandée existe, on l'applique
+    if (translationEntry && translationEntry[lang]) {
+      element.textContent = translationEntry[lang];
+    }
+  });
+}
 emailjs.init("atUIFstP0TCmRcmjx");
 
 // main.js - Gestion des traductions
