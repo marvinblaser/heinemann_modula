@@ -1,443 +1,1381 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KB MED - Modula L</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KB MED - Modula M</title>
     <!-- CSS Styles -->
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/components/header.css">
-    <link rel="stylesheet" href="css/components/footer.css">
-    <link rel="stylesheet" href="css/components/navigation.css">
-    <link rel="stylesheet" href="css/components/dropdown.css">
-    <link rel="stylesheet" href="css/components/buttons.css">
-    <link rel="stylesheet" href="css/components/colors.css">
-    <link rel="stylesheet" href="css/components/forms.css">
-    <link rel="stylesheet" href="css/components/modals.css">
-    <link rel="stylesheet" href="css/pages/machine-page.css">
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/components/header.css" />
+    <link rel="stylesheet" href="css/components/footer.css" />
+    <link rel="stylesheet" href="css/components/navigation.css" />
+    <link rel="stylesheet" href="css/components/dropdown.css" />
+    <link rel="stylesheet" href="css/components/buttons.css" />
+    <link rel="stylesheet" href="css/components/colors.css" />
+    <link rel="stylesheet" href="css/components/forms.css" />
+    <link rel="stylesheet" href="css/components/modals.css" />
+    <link rel="stylesheet" href="css/pages/machine-page.css" />
+    <link
+      rel="shortcut icon"
+      href="assets/icons/favicon.webp"
+      type="image/x-icon"
+    />
     <!-- EmailJS -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-</head>
-<body>
+    <style>
+      /* ===============================
+         Styles généraux pour les modals
+      =============================== */
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        width: 100%;
+        height: 100%;
+        padding: 20px;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        overflow-y: auto;
+      }
+      .modal.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      .modal-content {
+        background: #fff;
+        max-width: 600px;
+        margin: 60px auto;
+        padding: 30px;
+        border-radius: 8px;
+        position: relative;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        animation: slideDown 0.3s ease;
+      }
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10%);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .modal-close {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: none;
+        border: none;
+        font-size: 28px;
+        color: #333;
+        cursor: pointer;
+        transition: color 0.2s ease;
+      }
+      .modal-close:hover {
+        color: #000;
+      }
+      /* ===============================
+         Styles pour la liste d'options
+      =============================== */
+      .options-list {
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        padding: 15px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        background-color: #fefefe;
+      }
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+        padding: 5px 0;
+        transition: background-color 0.2s ease;
+      }
+      .checkbox-container:hover {
+        background-color: #fafafa;
+      }
+      .checkbox {
+        flex: 0 0 24px;
+        width: 24px;
+        height: 24px;
+        border: 2px solid #333;
+        border-radius: 4px;
+        margin-right: 12px;
+      }
+      .label {
+        flex: 1;
+        font-size: 1rem;
+        color: #333;
+      }
+      /* ===============================
+         Styles pour les boutons et formulaires
+      =============================== */
+      .button {
+        background-color: #005a9c;
+        color: #fff;
+        padding: 12px 24px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        display: inline-block;
+        text-align: center;
+      }
+      .button:hover {
+        background-color: #004a85;
+        transform: translateY(-2px);
+      }
+      .form-group {
+        margin-bottom: 16px;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #333;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+      }
+      .form-group input:focus {
+        border-color: #005a9c;
+        outline: none;
+      }
+      .error-message {
+        color: #d8000c;
+        font-size: 0.875rem;
+        margin-top: 4px;
+      }
+      /* ===============================
+         Spinner de chargement (facultatif)
+      =============================== */
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 6px solid #f3f3f3;
+        border-top: 6px solid #005a9c;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px auto;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      /* ===============================
+         Styles spécifiques du popup récapitulatif
+      =============================== */
+      #summaryModal p {
+        margin-bottom: 16px;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #333;
+      }
+      /* Le carré qui affichera la couleur sur le popup récapitulatif */
+      .color-sample {
+        display: inline-block;
+        vertical-align: middle;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin-right: 8px;
+      }
+      /* ===============================
+         Styles pour les sélecteurs de langue
+      =============================== */
+      .settings-item {
+        display: flex;
+        gap: 12px;
+      }
+      .language-selector {
+        cursor: pointer;
+        filter: grayscale(1);
+        transition: filter 0.3s ease, transform 0.2s ease;
+      }
+      .language-selector.active,
+      .language-selector:hover {
+        filter: grayscale(0);
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body>
     <!-- Header -->
     <header class="main-header">
-        <button class="settings-btn" id="settingsBtn" aria-label="Paramètres">
-            <img src="assets/icons/settings.svg" alt="Paramètres" />
-        </button>
-        <div class="logo">
-            <img class="logo-img" src="assets/logos/kbmed.svg" alt="KB MED" />
-        </div>
-        <button class="burger-btn" id="burgerBtn" aria-label="Menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
+      <button class="settings-btn" id="settingsBtn" aria-label="Paramètres">
+        <img src="assets/icons/settings.svg" alt="Paramètres" />
+      </button>
+      <div class="logo">
+        <img class="logo-img" src="assets/logos/kbmed.svg" alt="KB MED" />
+      </div>
+      <button class="burger-btn" id="burgerBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </header>
 
     <!-- Menu de navigation -->
     <nav class="main-nav" id="mainNav">
-        <button class="nav-close" id="navClose">&times;</button>
-        <a href="index.html" class="nav-item" data-translate="navigation.machine1">MODULA L</a>
-        <a href="modula-m.html" class="nav-item active" data-translate="navigation.machine2">MODULA M</a>
-        <a href="catalogue.html" class="nav-item" data-translate="navigation.catalogue">CATALOGUE</a>
-        <div class="nav-background"></div>
+      <button class="nav-close" id="navClose">&times;</button>
+      <a
+        href="index.html"
+        class="nav-item active"
+        data-translate="navigation.machine1"
+        >MODULA L</a
+      >
+      <a
+        href="modula-m.html"
+        class="nav-item"
+        data-translate="navigation.machine2"
+        >MODULA M</a
+      >
+      <a
+        href="catalogue.html"
+        class="nav-item"
+        data-translate="navigation.catalogue"
+        >CATALOGUE</a
+      >
+      <div class="nav-background"></div>
     </nav>
 
     <!-- Menu des paramètres -->
     <div class="settings-menu" id="settingsMenu">
-        <div class="settings-item">
-            <div class="language-selector active">
-                <img src="assets/icons/flag-fr.svg" alt="Français" data-lang="fr" />
-            </div>
-            <div class="language-selector">
-                <img src="assets/icons/flag-de.svg" alt="Allemand" data-lang="de" />
-            </div>
-            <div class="language-selector">
-                <img src="assets/icons/flag-it.svg" alt="Italie" data-lang="it" />
-            </div>
+      <div class="settings-item">
+        <div class="language-selector active">
+          <img src="assets/icons/flag-fr.svg" alt="Français" data-lang="fr" />
         </div>
-        <!-- <div class="settings-item">
-            <div class="settings-label">Thème</div>
-            <div class="theme-selector">
-                <img src="assets/icons/sun.svg" alt="Thème clair" />
-            </div>
-        </div> -->
+        <div class="language-selector">
+          <img src="assets/icons/flag-de.svg" alt="Allemand" data-lang="de" />
+        </div>
+        <div class="language-selector">
+          <img src="assets/icons/flag-it.svg" alt="Italie" data-lang="it" />
+        </div>
+      </div>
     </div>
 
-    <!-- Overlay pour les modales -->
+    <!-- Overlay -->
     <div class="overlay" id="overlay"></div>
 
     <!-- Contenu principal -->
     <main>
-        <h1 class="machine-title" data-translate="navigation.machine2">MODULA L</h1>
-
-        <div class="machine-image-container">
-            <img id="machineImage" src="assets/img/machines/modula-m/RAL9016.jpg" alt="Machine Modula M" />
-        </div>
-
-        <!-- Accordéons -->
-        <!-- Accordéons -->
-<div class="accordion-container">
-    <div class="accordion-item">
-        <button class="accordion-header" data-translate="accordion.colors">
-            Changer la couleur
-            <span class="arrow" style="float: right;">▼</span> <!-- Chevrons ajoutés -->
-        </button>
-        <div class="accordion-content">
+      <h1 class="machine-title" data-translate="navigation.machine2">
+        MODULA M
+      </h1>
+      <div class="machine-image-container">
+        <img
+          id="machineImage"
+          src="assets/img/machines/modula-m/RAL9016.jpg"
+          alt="Machine Modula M>"
+        />
+      </div>
+      <!-- Accordéons -->
+      <div class="accordion-container">
+        <!-- Accordéon Couleur -->
+        <div class="accordion-item">
+          <button class="accordion-header" data-translate="accordion.colors">
+            Changer la couleur <span class="arrow" style="float: right">▼</span>
+          </button>
+          <div class="accordion-content">
             <div class="color-grid">
-                <div class="color-ral1001 color-option"></div>
-                <div class="color-ral1013 color-option"></div>
-                <div class="color-ral1028 color-option"></div>
-                <div class="color-ral3004 color-option"></div>
-                <div class="color-ral3020 color-option"></div>
-                <div class="color-ral5003 color-option"></div>
-                <div class="color-ral5010 color-option"></div>
-                <div class="color-ral5014 color-option"></div>
-                <div class="color-ral5017 color-option"></div>
-                <div class="color-ral5018 color-option"></div>
-                <div class="color-ral5024 color-option"></div>
-                <div class="color-ral6029 color-option"></div>
-                <div class="color-ral6034 color-option"></div>
-                <div class="color-ral7011 color-option"></div>
-                <div class="color-ral7016 color-option"></div>
-                <div class="color-ral7032 color-option"></div>
-                <div class="color-ral7035 color-option"></div>
-                <div class="color-ral7044 color-option"></div>
-                <div class="color-ral7045 color-option"></div>
-                <div class="color-ral9010 color-option"></div>
-                <div class="color-ral9016 color-option active"></div>
+              <div class="color-ral1001 color-option"></div>
+              <div class="color-ral1013 color-option"></div>
+              <div class="color-ral1028 color-option"></div>
+              <div class="color-ral3004 color-option"></div>
+              <div class="color-ral3020 color-option"></div>
+              <div class="color-ral5003 color-option"></div>
+              <div class="color-ral5010 color-option"></div>
+              <div class="color-ral5014 color-option"></div>
+              <div class="color-ral5017 color-option"></div>
+              <div class="color-ral5018 color-option"></div>
+              <div class="color-ral5024 color-option"></div>
+              <div class="color-ral6029 color-option"></div>
+              <div class="color-ral6034 color-option"></div>
+              <div class="color-ral7011 color-option"></div>
+              <div class="color-ral7016 color-option"></div>
+              <div class="color-ral7032 color-option"></div>
+              <div class="color-ral7035 color-option"></div>
+              <div class="color-ral7044 color-option"></div>
+              <div class="color-ral7045 color-option"></div>
+              <div class="color-ral9010 color-option"></div>
+              <div class="color-ral9016 color-option active"></div>
             </div>
+          </div>
         </div>
-    </div>
-
-    <div class="accordion-item">
-        <button class="accordion-header" data-translate="accordion.details">
-            Détails techniques
-            <span class="arrow" style="float: right;">▼</span> <!-- Chevrons ajoutés -->
-        </button>
-        <div class="accordion-content">
+        <!-- Accordéon Détails techniques -->
+        <div class="accordion-item">
+          <button class="accordion-header" data-translate="accordion.details">
+            Détails techniques <span class="arrow" style="float: right">▼</span>
+          </button>
+          <div class="accordion-content">
             <ul class="tech-details">
-                <li data-translate="technical.dimensions">Dimensions: 120 x 80 x 60 cm</li>
-                <li data-translate="technical.weight">Poids: 85 kg</li>
-                <li data-translate="technical.power">Puissance: 2000W</li>
+              <li data-translate="technical.dimensions">
+                Dimensions: 120 x 80 x 60 cm
+              </li>
+              <li data-translate="technical.weight">Poids: 85 kg</li>
+              <li data-translate="technical.power">Puissance: 2000W</li>
             </ul>
+          </div>
         </div>
-    </div>
-
-    <div class="accordion-item">
-        <button class="accordion-header" data-translate="accordion.customize">
+        <!-- Accordéon Options -->
+        <div class="accordion-item">
+          <button class="accordion-header" data-translate="accordion.customize">
             Personnaliser ma machine
-            <span class="arrow" style="float: right;">▼</span> <!-- Chevrons ajoutés -->
-        </button>
-        <div class="accordion-content">
+            <span class="arrow" style="float: right">▼</span>
+          </button>
+          <div class="accordion-content">
+            <!-- Le formulaire dans l'accordéon, contenant le bouton pour ouvrir le popup Options -->
             <form id="optionsForm">
-                <div class="options-list">
-                    <label class="checkbox-container">
-                        <input type="checkbox" name="option1" value="Éclairage d'instruments LED RGB, avec changement de couleurs RGB (rouge, vert, bleu) incl. télécommande" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option1">Éclairage d'instruments LED RGB, avec changement de couleurs RGB (rouge, vert, bleu) incl. télécommande</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option2" value="Plateau d'instruments chauffant, pour le plan des instruments" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option2">Plateau d'instruments chauffant, pour le plan des instruments</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option3" value="Tiroir UV, pour le rangement des instruments traités" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option3">Tiroir UV, pour le rangement des instruments traités</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option4" value="Double galerie, au-dessus du plan des instruments avec plaque en aluminium pulsée" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option4">Double galerie, au-dessus du plan des instruments avec plaque en aluminium pulsée</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option5" value="Galerie, au-dessus du plan des instruments avec plaque en aluminium pulsée" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option5">Galerie, au-dessus du plan des instruments avec plaque en aluminium pulsée</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option6" value="Multiprise pour l'option galerie" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option6">Multiprise pour l'option galerie</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option7" value="Extension de plateau L, plateau de 1152 mm en matériau minéral résistant HI-MACS®" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option7">Extension de plateau L, plateau de 1152 mm en matériau minéral résistant HI-MACS®</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option8" value="Extension de plateau M, plateau de 985 mm en matériau minéral résistant HI-MACS®" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option8">Extension de plateau M, plateau de 985 mm en matériau minéral résistant HI-MACS®</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option9" value="Extension de plateau S, plateau de 500 mm en matériau minéral résistant HI-MACS®" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option9">Extension de plateau S, plateau de 500 mm en matériau minéral résistant HI-MACS®</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option10" value="Support de lampe frontale avec aimant, non commuté" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option10">Support de lampe frontale avec aimant, non commuté</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option11" value="Suspension pour lampe frontale à lumière froide, commutation automatique, réglable en hauteur et pivotante" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option11">Suspension pour lampe frontale à lumière froide, commutation automatique, réglable en hauteur et pivotante</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option12" value="Support de microscope pour microscopes Kaps SOM-22, côté gauche" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option12">Support de microscope pour microscopes Kaps SOM-22, côté gauche</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option13" value="Support de microscope pour microscopes Kaps SOM-22, côté droit" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option13">Support de microscope pour microscopes Kaps SOM-22, côté droit</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option14" value="Bras pivotant pour écran TFT, montage sur l'unité ORL" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option14">Bras pivotant pour écran TFT, montage sur l'unité ORL</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option15" value="Bras pivotant pour écran TFT, montage sur la perche du microscope" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option15">Bras pivotant pour écran TFT, montage sur la perche du microscope</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option16" value="Bras pivotant avec plateau, dimensions 360 x 280 mm, montage sur l'unité ORL, environ 360 x 280 mm (L x P), max 10 kg" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option16">Bras pivotant avec plateau, dimensions 360 x 280 mm, montage sur l'unité ORL, environ 360 x 280 mm (L x P), max 10 kg</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option17" value="Système d'aspiration avec vidange manuelle du bac à sécrétions, pompe à vide sans huile (40 l/min à -0,85 bar), suspension sans vibrations, commutation automatique lors du retrait du tuyau d'aspiration, filtre à bactéries, bac à sécrétions de 2,0 L (connectable directement), tuyaux antibactériens avec raccords rapides (aucune connexion d'eau requise)" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option17">Système d'aspiration avec vidange manuelle du bac à sécrétions, pompe à vide sans huile (40 l/min à -0,85 bar), suspension sans vibrations, commutation automatique lors du retrait du tuyau d'aspiration, filtre à bactéries, bac à sécrétions de 2,0 L (connectable directement), tuyaux antibactériens avec raccords rapides (aucune connexion d'eau requise)</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option18" value="Système d'aspiration 'Sekretomatik', vidange automatique du bac à sécrétions avec rinçage, commutation automatique lors du retrait du tuyau d'aspiration, pompe à vide sans huile (40 l/min à -0,85 bar), suspension sans vibrations, filtre à bactéries, pompe de relevage, valve AquaStop, tuyaux de raccordement, tuyaux antibactériens avec raccords rapides (connexion d'eau requise)" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option18">Système d'aspiration 'Sekretomatik', vidange automatique du bac à sécrétions avec rinçage, commutation automatique lors du retrait du tuyau d'aspiration, pompe à vide sans huile (40 l/min à -0,85 bar), suspension sans vibrations, filtre à bactéries, pompe de relevage, valve AquaStop, tuyaux de raccordement, tuyaux antibactériens avec raccords rapides (connexion d'eau requise)</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option19" value="Aspiration avec vidange manuelle du bac à sécrétions, système d'aspiration monodirectionnel MEDELA (aucune connexion d'eau requise)" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option19">Aspiration avec vidange manuelle du bac à sécrétions, système d'aspiration monodirectionnel MEDELA (aucune connexion d'eau requise)</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option20" value="Aspiration avec vidange manuelle du bac à sécrétions, système d'aspiration monodirectionnel SERRES (aucune connexion d'eau requise)" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option20">Aspiration avec vidange manuelle du bac à sécrétions, système d'aspiration monodirectionnel SERRES (aucune connexion d'eau requise)</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option21" value="Sac interne monodose MEDELA avec agent gélifiant, 1,5 L (30 pièces)" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option21">Sac interne monodose MEDELA avec agent gélifiant, 1,5 L (30 pièces)</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option22" value="Sac interne monodose SERRES avec agent gélifiant, 1,5 L (32 pièces)" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option22">Sac interne monodose SERRES avec agent gélifiant, 1,5 L (32 pièces)</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option23" value="Régulateur de vide pour dosage précis, plage de réglage : 0 à 0,85 bar" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option23">Régulateur de vide pour dosage précis, plage de réglage : 0 à 0,85 bar</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option24" value="Tuyau d'aspiration séparé pour l'adaptation du bac à salive/tasse à rinçage auriculaire avec commutation automatique lors du retrait du tuyau d'aspiration" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option24">Tuyau d'aspiration séparé pour l'adaptation du bac à salive/tasse à rinçage auriculaire avec commutation automatique lors du retrait du tuyau d'aspiration</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option25" value="Système de rinçage du tuyau avec nettoyage automatique du tuyau d'aspiration à l'aide de la pression d'eau (connexion d'eau requise)" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option25">Système de rinçage du tuyau avec nettoyage automatique du tuyau d'aspiration à l'aide de la pression d'eau (connexion d'eau requise)</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option26" value="Système de lavage/rinçage de canule, via un réservoir fixé latéralement à l'unité, avec solution désinfectante" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option26">Système de lavage/rinçage de canule, via un réservoir fixé latéralement à l'unité, avec solution désinfectante</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option27" value="+37° C Système de rinçage auriculaire avec chauffe-eau instantané : affichage digital de la température, poignée de rinçage autoclavable avec canule interchangeable et tuyau antibactérien avec raccord rapide incluant valve AquaStop et tuyaux de raccordement" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option27">+37° C Système de rinçage auriculaire avec chauffe-eau instantané : affichage digital de la température, poignée de rinçage autoclavable avec canule interchangeable et tuyau antibactérien avec raccord rapide incluant valve AquaStop et tuyaux de raccordement</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option28" value="+37° C Système autonome de rinçage auriculaire : réservoir d'eau externe (2 litres), poignée de rinçage autoclavable avec canule interchangeable et tuyau antibactérien avec raccord rapide ; indépendant du réseau d'eau domestique" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option28">+37° C Système autonome de rinçage auriculaire : réservoir d'eau externe (2 litres), poignée de rinçage autoclavable avec canule interchangeable et tuyau antibactérien avec raccord rapide ; indépendant du réseau d'eau domestique</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option29" value="Extension vestimentaire, température réglable de +22° à +44°C" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option29">Extension vestimentaire, température réglable de +22° à +44°C</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option30" value="Installation pneumatique : compresseur (sans huile, 12 L/min, max. 2,5 bar), réservoir avec filtre à air comprimé autoclavable, embout de soufflerie autoclavable avec tuyau antibactérien à raccord rapide incluant 3 nébuliseurs pour médicaments liquides et support pour flacons pulvérisateurs" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option30">Installation pneumatique : compresseur (sans huile, 12 L/min, max. 2,5 bar), réservoir avec filtre à air comprimé autoclavable, embout de soufflerie autoclavable avec tuyau antibactérien à raccord rapide incluant 3 nébuliseurs pour médicaments liquides et support pour flacons pulvérisateurs</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option31" value="Vanne de régulation d'air pour dosage précis" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option31">Vanne de régulation d'air pour dosage précis</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option32" value="1 source lumineuse à lumière froide, LED haute performance, régulation intégrée, sortie lumineuse remplaçable avec adaptateur STORZ incluant support pour guide de lumière sur le bras pivotant" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option32">1 source lumineuse à lumière froide, LED haute performance, régulation intégrée, sortie lumineuse remplaçable avec adaptateur STORZ incluant support pour guide de lumière sur le bras pivotant</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option33" value="2 sources lumineuses à lumière froide, LED haute performance, régulation intégrée, sortie lumineuse remplaçable avec adaptateur STORZ incluant support pour guide de lumière sur le bras pivotant" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option33">2 sources lumineuses à lumière froide, LED haute performance, régulation intégrée, sortie lumineuse remplaçable avec adaptateur STORZ incluant support pour guide de lumière sur le bras pivotant</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option34" value="3 sources lumineuses à lumière froide, LED haute performance, régulation intégrée, sortie lumineuse remplaçable avec adaptateur STORZ incluant support pour guide de lumière sur le bras pivotant" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option34">3 sources lumineuses à lumière froide, LED haute performance, régulation intégrée, sortie lumineuse remplaçable avec adaptateur STORZ incluant support pour guide de lumière sur le bras pivotant</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option35" value="Contrôle par capteur pour sources lumineuses LED, allumage automatique lors du retrait du guide de lumière" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option35">Contrôle par capteur pour sources lumineuses LED, allumage automatique lors du retrait du guide de lumière</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option36" value="Source lumineuse LED portative, max 1 000 lm avec connecteur WOLF" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option36">Source lumineuse LED portative, max 1 000 lm avec connecteur WOLF</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option37" value="Source lumineuse LED portative, max 1 000 lm avec connecteur STORZ" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option37">Source lumineuse LED portative, max 1 000 lm avec connecteur STORZ</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option38" value="Support pour endoscope pour sinusoscopes, non chauffant, pour le rangement des endoscopes (2,7 mm ou 4,0 mm), longueur max. 200 mm" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option38">Support pour endoscope pour sinusoscopes, non chauffant, pour le rangement des endoscopes (2,7 mm ou 4,0 mm), longueur max. 200 mm</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option39" value="Support pour endoscope préchauffé pour sinusoscopes, destiné au rangement et au préchauffage des endoscopes (2,7 mm ou 4,0 mm), longueur max. 200 mm" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option39">Support pour endoscope préchauffé pour sinusoscopes, destiné au rangement et au préchauffage des endoscopes (2,7 mm ou 4,0 mm), longueur max. 200 mm</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option40" value="Support pour endoscope pour laryngoscopes, non chauffant, pour le rangement des laryngoscopes (10 mm ou 11 mm), longueur max. 200 mm" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option40">Support pour endoscope pour laryngoscopes, non chauffant, pour le rangement des laryngoscopes (10 mm ou 11 mm), longueur max. 200 mm</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option41" value="Support pour endoscope préchauffé pour laryngoscopes, destiné au rangement et au préchauffage des laryngoscopes (10 mm ou 11 mm), longueur max. 200 mm" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option41">Support pour endoscope préchauffé pour laryngoscopes, destiné au rangement et au préchauffage des laryngoscopes (10 mm ou 11 mm), longueur max. 200 mm</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option42" value="3 porte-endoscopes pour endoscopes flexibles avec support, version 4, (profondeur 490 mm, diamètre intérieur 28 mm), support magnétique" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option42">3 porte-endoscopes pour endoscopes flexibles avec support, version 4, (profondeur 490 mm, diamètre intérieur 28 mm), support magnétique</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option43" value="1 porte-endoscopes pour endoscopes flexibles avec support, version 4, (profondeur 490 mm), porte-endoscopes en acier inoxydable, diamètre intérieur 28 mm, support magnétique" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option43">1 porte-endoscopes pour endoscopes flexibles avec support, version 4, (profondeur 490 mm), porte-endoscopes en acier inoxydable, diamètre intérieur 28 mm, support magnétique</div>
-                      </label>
-                      <label class="checkbox-container">
-                        <input type="checkbox" name="option44" value="Adaptateur pour porte-endoscopes en acier inoxydable, pour endoscopes flexibles XION EN-F" />
-                        <div class="checkbox"></div>
-                        <div class="label" data-translate="options.option44">Adaptateur pour porte-endoscopes en acier inoxydable, pour endoscopes flexibles XION EN-F</div>
-                      </label>
-                </div>
-                <button type="button" class="save-config-btn" data-translate="options.saveConfig">Enregistrer ma configuration</button>
+              <button
+                type="button"
+                class="save-config-btn button"
+                id="openOptionsBtn"
+                data-translate="options.saveConfig"
+              >
+                Aller au configurateur
+              </button>
             </form>
+          </div>
         </div>
-    </div>
-</div>
-
-
-        <button class="cta-button" onclick="window.location.href='catalogue.html'" data-translate="general.seeMore">Voir le catalogue</button>
+      </div>
+      <button
+        class="cta-button button"
+        onclick="window.location.href='catalogue.html'"
+        data-translate="general.seeMore"
+      >
+        Voir le catalogue
+      </button>
     </main>
 
-    <!-- Modal de configuration -->
-<div class="modal" id="configModal">
-    <div class="modal-content">
-        <button class="modal-close">&times;</button>
-        <div class="modal-step active" id="modalStep1">
-            <h2 class="modal-title" data-translate="modal.step1Title">Vos coordonnées</h2>
-            <form id="userInfoForm" data-js-submit="true">
-                <div class="form-group">
-                    <label for="name" data-translate="form.name">Nom</label>
-                    <input type="text" id="name" name="name" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="firstname" data-translate="form.firstname">Prénom</label>
-                    <input type="text" id="firstname" name="firstname" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="email" data-translate="form.email">Email</label>
-                    <input type="email" id="email" name="email" class="form-control" required>
-                </div>
-                <button type="button" class="button button--full next-btn" data-translate="form.next">Suivant</button>
-            </form>
-        </div>
-        <div class="modal-step" id="modalStep2">
-            <h2 class="modal-title" data-translate="modal.step2Title">Récapitulatif</h2>
-            <div class="recap-container">
-                <div class="color-recap">
-                    <h3 data-translate="modal.colorChosen">Couleur choisie:</h3>
-                    <p id="selectedColor">Blanc</p>
-                </div>
-                <div class="options-recap">
-                    <h3 data-translate="modal.optionsChosen">Options choisies:</h3>
-                    <ul id="selectedOptions">
-                        <!-- Options sélectionnées générées dynamiquement -->
-                    </ul>
-                </div>
+    <!-- ======================================
+         Popup Modal Options (initialement masqué)
+    ====================================== -->
+    <div class="modal" id="optionsModal">
+      <div class="modal-content">
+        <button class="modal-close" id="closeOptions">&times;</button>
+        <h2>Personnalisez vos options</h2>
+        <div class="options-list" id="optionsList">
+          <!-- 45 options générées -->
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option1"
+              value="Éclairage d'instruments LED RGB, avec changement de couleurs RGB (rouge, vert, bleu) incl. télécommande"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option1">
+              Éclairage d'instruments LED RGB, avec changement de couleurs RGB
+              (rouge, vert, bleu) incl. télécommande
             </div>
-            <div class="loading-spinner hide"></div>
-            <div class="form-actions">
-                <button type="button" class="button button--secondary back-btn" data-translate="form.back">Retour</button>
-                <button type="button" class="button confirm-btn" data-translate="form.confirm">Confirmer</button>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option2"
+              value="Plateau d'instruments chauffant, pour le plan des instruments"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option2">
+              Plateau d'instruments chauffant, pour le plan des instruments
             </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option3"
+              value="Tiroir UV, pour le rangement des instruments traités"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option3">
+              Tiroir UV, pour le rangement des instruments traités
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option4"
+              value="Double galerie, au-dessus du plan des instruments avec plaque en aluminium pulsée"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option4">
+              Double galerie, au-dessus du plan des instruments avec plaque en
+              aluminium pulsée
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option5"
+              value="Galerie, au-dessus du plan des instruments avec plaque en aluminium pulsée"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option5">
+              Galerie, au-dessus du plan des instruments avec plaque en
+              aluminium pulsée
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option6"
+              value="Multiprise pour l'option galerie"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option6">
+              Multiprise pour l'option galerie
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option7"
+              value="Extension de plateau L, plateau de 1152 mm en matériau minéral résistant HI-MACS®"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option7">
+              Extension de plateau L, plateau de 1152 mm en matériau minéral
+              résistant HI-MACS®
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option8"
+              value="Extension de plateau M, plateau de 985 mm en matériau minéral résistant HI-MACS®"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option8">
+              Extension de plateau M, plateau de 985 mm en matériau minéral
+              résistant HI-MACS®
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option9"
+              value="Extension de plateau S, plateau de 500 mm en matériau minéral résistant HI-MACS®"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option9">
+              Extension de plateau S, plateau de 500 mm en matériau minéral
+              résistant HI-MACS®
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option10"
+              value="Support de lampe frontale avec aimant, non commuté"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option10">
+              Support de lampe frontale avec aimant, non commuté
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option11"
+              value="Suspension pour lampe frontale à lumière froide, commutation automatique, réglable en hauteur et pivotante"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option11">
+              Suspension pour lampe frontale à lumière froide, commutation
+              automatique, réglable en hauteur et pivotante
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option12"
+              value="Support de microscope pour microscopes Kaps SOM-22, côté gauche"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option12">
+              Support de microscope pour microscopes Kaps SOM-22, côté gauche
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option13"
+              value="Support de microscope pour microscopes Kaps SOM-22, côté droit"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option13">
+              Support de microscope pour microscopes Kaps SOM-22, côté droit
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option14"
+              value="Bras pivotant pour écran TFT, montage sur l'unité ORL"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option14">
+              Bras pivotant pour écran TFT, montage sur l'unité ORL
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option15"
+              value="Bras pivotant pour écran TFT, montage sur la perche du microscope"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option15">
+              Bras pivotant pour écran TFT, montage sur la perche du microscope
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option16"
+              value="Bras pivotant avec plateau, dimensions 360 x 280 mm, montage sur l'unité ORL, environ 360 x 280 mm (L x P), max 10 kg"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option16">
+              Bras pivotant avec plateau, dimensions 360 x 280 mm, montage sur
+              l'unité ORL, environ 360 x 280 mm (L x P), max 10 kg
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option17"
+              value="Système d'aspiration avec vidange manuelle du bac à sécrétions, pompe à vide sans huile (40 l/min à -0,85 bar), suspension sans vibrations, commutation automatique lors du retrait du tuyau d'aspiration, filtre à bactéries, bac à sécrétions de 2,0 L (connectable directement), tuyaux antibactériens avec raccords rapides (aucune connexion d'eau requise)"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option17">
+              Système d'aspiration avec vidange manuelle du bac à sécrétions,
+              pompe à vide sans huile (40 l/min à -0,85 bar), suspension sans
+              vibrations, commutation automatique lors du retrait du tuyau
+              d'aspiration, filtre à bactéries, bac à sécrétions de 2,0 L
+              (connectable directement), tuyaux antibactériens avec raccords
+              rapides (aucune connexion d'eau requise)
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option18"
+              value="Système d'aspiration 'Sekretomatik', vidange automatique du bac à sécrétions avec rinçage, commutation automatique lors du retrait du tuyau d'aspiration, pompe à vide sans huile (40 l/min à -0,85 bar), suspension sans vibrations, filtre à bactéries, pompe de relevage, valve AquaStop, tuyaux de raccordement, tuyaux antibactériens avec raccords rapides (connexion d'eau requise)"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option18">
+              Système d'aspiration 'Sekretomatik', vidange automatique du bac à
+              sécrétions avec rinçage, commutation automatique lors du retrait
+              du tuyau d'aspiration, pompe à vide sans huile (40 l/min à -0,85
+              bar), suspension sans vibrations, filtre à bactéries, pompe de
+              relevage, valve AquaStop, tuyaux de raccordement, tuyaux
+              antibactériens avec raccords rapides (connexion d'eau requise)
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option19"
+              value="Aspiration avec vidange manuelle du bac à sécrétions, système d'aspiration monodirectionnel MEDELA (aucune connexion d'eau requise)"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option19">
+              Aspiration avec vidange manuelle du bac à sécrétions, système
+              d'aspiration monodirectionnel MEDELA (aucune connexion d'eau
+              requise)
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option20"
+              value="Aspiration avec vidange manuelle du bac à sécrétions, système d'aspiration monodirectionnel SERRES (aucune connexion d'eau requise)"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option20">
+              Aspiration avec vidange manuelle du bac à sécrétions, système
+              d'aspiration monodirectionnel SERRES (aucune connexion d'eau
+              requise)
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option21"
+              value="Sac interne monodose MEDELA avec agent gélifiant, 1,5 L (30 pièces)"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option21">
+              Sac interne monodose MEDELA avec agent gélifiant, 1,5 L (30
+              pièces)
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option22"
+              value="Sac interne monodose SERRES avec agent gélifiant, 1,5 L (32 pièces)"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option22">
+              Sac interne monodose SERRES avec agent gélifiant, 1,5 L (32
+              pièces)
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option23"
+              value="Régulateur de vide pour dosage précis, plage de réglage : 0 à 0,85 bar"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option23">
+              Régulateur de vide pour dosage précis, plage de réglage : 0 à 0,85
+              bar
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option24"
+              value="Tuyau d'aspiration séparé pour l'adaptation du bac à salive/tasse à rinçage auriculaire avec commutation automatique lors du retrait du tuyau d'aspiration"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option24">
+              Tuyau d'aspiration séparé pour l'adaptation du bac à salive/tasse
+              à rinçage auriculaire avec commutation automatique lors du retrait
+              du tuyau d'aspiration
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option25"
+              value="Système de rinçage du tuyau avec nettoyage automatique du tuyau d'aspiration à l'aide de la pression d'eau (connexion d'eau requise)"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option25">
+              Système de rinçage du tuyau avec nettoyage automatique du tuyau
+              d'aspiration à l'aide de la pression d'eau (connexion d'eau
+              requise)
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option26"
+              value="Système de lavage/rinçage de canule, via un réservoir fixé latéralement à l'unité, avec solution désinfectante"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option26">
+              Système de lavage/rinçage de canule, via un réservoir fixé
+              latéralement à l'unité, avec solution désinfectante
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option27"
+              value="+37° C Système de rinçage auriculaire avec chauffe-eau instantané : affichage digital de la température, poignée de rinçage autoclavable avec canule interchangeable et tuyau antibactérien avec raccord rapide incluant valve AquaStop et tuyaux de raccordement"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option27">
+              +37° C Système de rinçage auriculaire avec chauffe-eau instantané
+              : affichage digital de la température, poignée de rinçage
+              autoclavable avec canule interchangeable et tuyau antibactérien
+              avec raccord rapide incluant valve AquaStop et tuyaux de
+              raccordement
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option28"
+              value="+37° C Système autonome de rinçage auriculaire : réservoir d'eau externe (2 litres), poignée de rinçage autoclavable avec canule interchangeable et tuyau antibactérien avec raccord rapide ; indépendant du réseau d'eau domestique"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option28">
+              +37° C Système autonome de rinçage auriculaire : réservoir d'eau
+              externe (2 litres), poignée de rinçage autoclavable avec canule
+              interchangeable et tuyau antibactérien avec raccord rapide ;
+              indépendant du réseau d'eau domestique
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option29"
+              value="Extension vestimentaire, température réglable de +22° à +44°C"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option29">
+              Extension vestimentaire, température réglable de +22° à +44°C
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option30"
+              value="Installation pneumatique : compresseur (sans huile, 12 L/min, max. 2,5 bar), réservoir avec filtre à air comprimé autoclavable, embout de soufflerie autoclavable avec tuyau antibactérien à raccord rapide incluant 3 nébuliseurs pour médicaments liquides et support pour flacons pulvérisateurs"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option30">
+              Installation pneumatique : compresseur (sans huile, 12 L/min, max.
+              2,5 bar), réservoir avec filtre à air comprimé autoclavable,
+              embout de soufflerie autoclavable avec tuyau antibactérien à
+              raccord rapide incluant 3 nébuliseurs pour médicaments liquides et
+              support pour flacons pulvérisateurs
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option31"
+              value="Vanne de régulation d'air pour dosage précis"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option31">
+              Vanne de régulation d'air pour dosage précis
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option32"
+              value="1 source lumineuse à lumière froide, LED haute performance, régulation intégrée, sortie lumineuse remplaçable avec adaptateur STORZ incluant support pour guide de lumière sur le bras pivotant"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option32">
+              1 source lumineuse à lumière froide, LED haute performance,
+              régulation intégrée, sortie lumineuse remplaçable avec adaptateur
+              STORZ incluant support pour guide de lumière sur le bras pivotant
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option33"
+              value="2 sources lumineuses à lumière froide, LED haute performance, régulation intégrée, sortie lumineuse remplaçable avec adaptateur STORZ incluant support pour guide de lumière sur le bras pivotant"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option33">
+              2 sources lumineuses à lumière froide, LED haute performance,
+              régulation intégrée, sortie lumineuse remplaçable avec adaptateur
+              STORZ incluant support pour guide de lumière sur le bras pivotant
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option34"
+              value="3 sources lumineuses à lumière froide, LED haute performance, régulation intégrée, sortie lumineuse remplaçable avec adaptateur STORZ incluant support pour guide de lumière sur le bras pivotant"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option34">
+              3 sources lumineuses à lumière froide, LED haute performance,
+              régulation intégrée, sortie lumineuse remplaçable avec adaptateur
+              STORZ incluant support pour guide de lumière sur le bras pivotant
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option35"
+              value="Contrôle par capteur pour sources lumineuses LED, allumage automatique lors du retrait du guide de lumière"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option35">
+              Contrôle par capteur pour sources lumineuses LED, allumage
+              automatique lors du retrait du guide de lumière
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option36"
+              value="Source lumineuse LED portative, max 1 000 lm avec connecteur WOLF"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option36">
+              Source lumineuse LED portative, max 1 000 lm avec connecteur WOLF
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option37"
+              value="Source lumineuse LED portative, max 1 000 lm avec connecteur STORZ"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option37">
+              Source lumineuse LED portative, max 1 000 lm avec connecteur STORZ
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option38"
+              value="Support pour endoscope pour sinusoscopes, non chauffant, pour le rangement des endoscopes (2,7 mm ou 4,0 mm), longueur max. 200 mm"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option38">
+              Support pour endoscope pour sinusoscopes, non chauffant, pour le
+              rangement des endoscopes (2,7 mm ou 4,0 mm), longueur max. 200 mm
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option39"
+              value="Support pour endoscope préchauffé pour sinusoscopes, destiné au rangement et au préchauffage des endoscopes (2,7 mm ou 4,0 mm), longueur max. 200 mm"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option39">
+              Support pour endoscope préchauffé pour sinusoscopes, destiné au
+              rangement et au préchauffage des endoscopes (2,7 mm ou 4,0 mm),
+              longueur max. 200 mm
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option40"
+              value="Support pour endoscope pour laryngoscopes, non chauffant, pour le rangement des laryngoscopes (10 mm ou 11 mm), longueur max. 200 mm"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option40">
+              Support pour endoscope pour laryngoscopes, non chauffant, pour le
+              rangement des laryngoscopes (10 mm ou 11 mm), longueur max. 200 mm
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option41"
+              value="Support pour endoscope préchauffé pour laryngoscopes, destiné au rangement et au préchauffage des laryngoscopes (10 mm ou 11 mm), longueur max. 200 mm"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option41">
+              Support pour endoscope préchauffé pour laryngoscopes, destiné au
+              rangement et au préchauffage des laryngoscopes (10 mm ou 11 mm),
+              longueur max. 200 mm
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option42"
+              value="3 porte-endoscopes pour endoscopes flexibles avec support, version 4, (profondeur 490 mm, diamètre intérieur 28 mm), support magnétique"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option42">
+              3 porte-endoscopes pour endoscopes flexibles avec support, version
+              4, (profondeur 490 mm, diamètre intérieur 28 mm), support
+              magnétique
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option43"
+              value="1 porte-endoscopes pour endoscopes flexibles avec support, version 4, (profondeur 490 mm), porte-endoscopes en acier inoxydable, diamètre intérieur 28 mm, support magnétique"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option43">
+              1 porte-endoscopes pour endoscopes flexibles avec support, version
+              4, (profondeur 490 mm), porte-endoscopes en acier inoxydable,
+              diamètre intérieur 28 mm, support magnétique
+            </div>
+          </label>
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              name="option44"
+              value="Adaptateur pour porte-endoscopes en acier inoxydable, pour endoscopes flexibles XION EN-F"
+            />
+            <div class="checkbox"></div>
+            <div class="label" data-translate="options.option44">
+              Adaptateur pour porte-endoscopes en acier inoxydable, pour
+              endoscopes flexibles XION EN-F
+            </div>
+          </label>
         </div>
-        <div class="modal-step" id="modalStep3">
-            <h2 class="modal-title" data-translate="modal.step3Title">Configuration enregistrée</h2>
-            <p class="text-center" data-translate="modal.thankYou">Merci! Votre configuration a été enregistrée.</p>
-            <p class="text-center" data-translate="modal.emailSent">Un email récapitulatif vous a été envoyé.</p>
-            <p style="margin-bottom: 20px;"></p>
-            <button type="button" class="button button--full close-btn" data-translate="form.close">Fermer</button>
-        </div>
+        <button type="button" class="button" id="validateOptions">
+          Valider mes options
+        </button>
+      </div>
     </div>
-</div>
 
+    <!-- ======================================
+         Popup Modal Coordonnées (initialement masqué)
+    ====================================== -->
+    <div class="modal" id="coordinatesModal">
+      <div class="modal-content">
+        <button class="modal-close" id="closeCoordinates">&times;</button>
+        <h2>Entrez vos coordonnées</h2>
+        <!-- (Optionnel : un spinner de chargement peut être affiché ici) -->
+        <div class="loading-spinner hide"></div>
+        <form id="userInfoForm" data-js-submit="true">
+          <div class="form-group">
+            <label for="name">Nom</label>
+            <input type="text" id="name" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="firstname">Prénom</label>
+            <input type="text" id="firstname" name="firstname" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+          <!-- Ici le bouton permet d'ouvrir le popup récapitulatif -->
+          <button type="submit" class="button">Valider mes coordonnées</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ======================================
+         Popup Modal Récapitulatif
+    ====================================== -->
+    <div class="modal" id="summaryModal">
+      <div class="modal-content">
+        <button class="modal-close" id="closeSummary">&times;</button>
+        <h2>Récapitulatif de votre commande</h2>
+        <div id="summaryContent">
+          <!-- Le contenu sera rempli dynamiquement -->
+          <p id="summaryColor">
+            <!-- Le span "color-sample" affichera la couleur -->
+            <span class="color-sample" id="colorSample"></span>
+            <span id="colorName"></span>
+          </p>
+          <p id="summaryOptions"></p>
+        </div>
+        <button type="button" class="button" id="confirmOrder">
+          Confirmer
+        </button>
+      </div>
+    </div>
 
     <!-- Footer -->
     <footer class="main-footer">
-        <div class="footer-logo">
-            <img class="footer-logo-img" src="assets/logos/kbmed.svg" alt="KB MED" />
-            <p class="footer-logo-text" data-translate="general.copyright"></p>
-        </div>
-        <p class="follow-text" data-translate="general.follow"></p>
-        <div class="social-links">
-            <a href="#"><img src="assets/icons/instagram.svg" alt="Instagram" /></a>
-            <a href="#"><img src="assets/icons/facebook.svg" alt="Facebook" /></a>
-            <a href="#"><img src="assets/icons/linkedin.svg" alt="LinkedIn" /></a>
-        </div>
+      <div class="footer-logo">
+        <img
+          class="footer-logo-img"
+          src="assets/logos/kbmed.svg"
+          alt="KB MED"
+        />
+        <p class="footer-logo-text" data-translate="general.copyright"></p>
+      </div>
+      <p class="follow-text" data-translate="general.follow"></p>
+      <div class="social-links">
+        <a href="#"><img src="assets/icons/instagram.svg" alt="Instagram" /></a>
+        <a href="#"><img src="assets/icons/facebook.svg" alt="Facebook" /></a>
+        <a href="#"><img src="assets/icons/linkedin.svg" alt="LinkedIn" /></a>
+      </div>
     </footer>
-
-    <!-- Scripts -->
     <script src="js/main.js"></script>
-    <script src="js/components/navigation.js"></script>
-    <script src="js/components/dropdown.js"></script>
     <script src="js/components/colorSelectorM.js"></script>
-    <script src="js/components/optionsManager.js"></script>
-    <script src="js/utils/formValidation.js"></script>
-    <script src="js/utils/emailSenderM.js"></script>
-    <script src="js/utils/languageSwitch.js"></script>
-</body>
+    <script src="js/components/dropdown.js"></script>
+    <script src="js/components/navigation.js"></script>
+
+    <!-- ======================================
+         Script de validation et envoi d'email
+    ====================================== -->
+    <script>
+      
+      document.addEventListener("DOMContentLoaded", function () {
+        initFormValidation();
+      });
+
+      function initFormValidation() {
+        const forms = document.querySelectorAll("form");
+
+        forms.forEach((form) => {
+          form.addEventListener("submit", function (e) {
+            if (form.getAttribute("data-js-submit") === "true") {
+              e.preventDefault();
+            }
+            if (!validateForm(form)) {
+              e.preventDefault();
+            } else {
+              console.log("Formulaire validé !");
+              // Pour le formulaire des coordonnées, on passe au popup récapitulatif
+              if (form.id === "userInfoForm") {
+                closeCoordinatesModal();
+                openSummaryModal();
+              } else {
+                sendConfigurationEmail();
+              }
+            }
+          });
+
+          const inputs = form.querySelectorAll("input, select, textarea");
+          inputs.forEach((input) => {
+            input.addEventListener("blur", function () {
+              validateInput(this);
+            });
+            input.addEventListener("input", function () {
+              if (this.classList.contains("invalid")) {
+                this.classList.remove("invalid");
+                const errorMessage = this.nextElementSibling;
+                if (
+                  errorMessage &&
+                  errorMessage.classList.contains("error-message")
+                ) {
+                  errorMessage.remove();
+                }
+              }
+            });
+          });
+        });
+      }
+
+      function validateForm(form) {
+        let isValid = true;
+        const inputs = form.querySelectorAll("input, select, textarea");
+        inputs.forEach((input) => {
+          if (!validateInput(input)) {
+            isValid = false;
+          }
+        });
+        return isValid;
+      }
+
+      function validateInput(input) {
+        if (input.disabled || input.readOnly) {
+          return true;
+        }
+        let isValid = true;
+        let errorMessage = "";
+        const existingError = input.nextElementSibling;
+        if (
+          existingError &&
+          existingError.classList.contains("error-message")
+        ) {
+          existingError.remove();
+        }
+        if (input.hasAttribute("required") && !input.value.trim()) {
+          isValid = false;
+          errorMessage = "Ce champ est requis";
+        } else if (
+          input.type === "email" &&
+          input.value.trim() &&
+          !validateEmail(input.value)
+        ) {
+          isValid = false;
+          errorMessage = "Veuillez entrer une adresse email valide";
+        } else if (input.hasAttribute("pattern") && input.value.trim()) {
+          const pattern = new RegExp(input.getAttribute("pattern"));
+          if (!pattern.test(input.value)) {
+            isValid = false;
+            errorMessage = input.title || "Format invalide";
+          }
+        } else if (
+          input.hasAttribute("minlength") &&
+          input.value.length < parseInt(input.getAttribute("minlength"))
+        ) {
+          isValid = false;
+          errorMessage = `Minimum ${input.getAttribute(
+            "minlength"
+          )} caractères requis`;
+        }
+        if (!isValid) {
+          input.classList.add("invalid");
+          const errorElement = document.createElement("div");
+          errorElement.classList.add("error-message");
+          errorElement.textContent = errorMessage;
+          input.insertAdjacentElement("afterend", errorElement);
+        } else {
+          input.classList.remove("invalid");
+        }
+        return isValid;
+      }
+
+      function validateEmail(email) {
+        const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return re.test(String(email).toLowerCase());
+      }
+
+      // ========================================================
+      // Envoi de l'email via EmailJS
+      // ========================================================
+      const EMAIL_SERVICE_ID = "service_pff2cmo";
+      const EMAIL_TEMPLATE_ID = "template_50exznp";
+
+      function sendConfigurationEmail() {
+        const loadingSpinner = document.querySelector(".loading-spinner");
+        if (loadingSpinner) loadingSpinner.classList.remove("hide");
+
+        const name = document.getElementById("name").value.trim();
+        const firstname = document.getElementById("firstname").value.trim();
+        const email = document.getElementById("email").value.trim();
+
+        if (!email) {
+          alert("Veuillez entrer une adresse email.");
+          if (loadingSpinner) loadingSpinner.classList.add("hide");
+          return;
+        }
+
+        // Récupération de la couleur depuis un élément ou sessionStorage
+        let selectedColor = "";
+        const selectedColorElement = document.getElementById("selectedColor");
+        if (selectedColorElement) {
+          selectedColor = selectedColorElement.textContent.trim();
+        } else {
+          selectedColor = sessionStorage.getItem("selectedColor") || "";
+        }
+
+        // Récupération des options depuis le sessionStorage
+        const storedOptions = sessionStorage.getItem("selectedOptions");
+        const selectedOptions = storedOptions
+          ? JSON.parse(storedOptions).join(", ")
+          : "";
+
+        const selectedLanguage = window.currentLanguage || "fr";
+
+        const emailContent = prepareEmailContent(
+          selectedLanguage,
+          firstname,
+          selectedColor,
+          selectedOptions
+        );
+
+        const templateParams = {
+          to_name: `${firstname} ${name}`,
+          to_email: email,
+          message: emailContent,
+        };
+
+        emailjs
+          .send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, templateParams)
+          .then(
+            function (response) {
+              console.log("SUCCESS!", response.status, response.text);
+              completeEmailSending(true);
+            },
+            function (error) {
+              console.log("FAILED...", error);
+              completeEmailSending(false);
+            }
+          );
+      }
+
+      function prepareEmailContent(
+        language,
+        firstname,
+        selectedColor,
+        selectedOptions
+      ) {
+        const messages = {
+          fr: {
+            subject: "🎉 Votre configuration a été enregistrée !",
+            greeting: `Bonjour ${firstname},\n`,
+            confirmation:
+              "Nous confirmons que votre configuration pour le MODULA M a été enregistrée.\n",
+            contact: "Nous vous contacterons dès que possible.\n",
+            thankYou: "Merci pour votre intérêt.\n",
+            seeYouSoon: "À bientôt !\n",
+            recap: "Récapitulatif de votre commande :\n",
+            colorChosen: `Couleur choisie : ${selectedColor}\n`,
+            optionsChosen: `Options choisies : ${selectedOptions}\n`,
+            companyInfo:
+              "KBMedizintechnik\nGewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch",
+          },
+          de: {
+            subject: "🎉 Ihre Konfiguration wurde gespeichert!",
+            greeting: `Guten Tag ${firstname},\n`,
+            confirmation:
+              "Wir bestätigen, dass Ihre Konfiguration für MODULA M gespeichert wurde.\n",
+            contact: "Wir werden Sie so schnell wie möglich kontaktieren.\n",
+            thankYou: "Danke für Ihr Interesse.\n",
+            seeYouSoon: "Bis bald!\n",
+            recap: "Zusammenfassung Ihrer Bestellung:\n",
+            colorChosen: `Gewählte Farbe: ${selectedColor}\n`,
+            optionsChosen: `Gewählte Optionen: ${selectedOptions}\n`,
+            companyInfo:
+              "KBMedizintechnik\nGewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch",
+          },
+          it: {
+            subject: "🎉 La tua configurazione è stata salvata!",
+            greeting: `Buongiorno ${firstname},\n`,
+            confirmation:
+              "Confermiamo che la configurazione del MODULA M è stata salvata.\n",
+            contact: "Ti contatteremo il prima possibile.\n",
+            thankYou: "Grazie per il tuo interesse.\n",
+            seeYouSoon: "A presto!\n",
+            recap: "Riepilogo del tuo ordine:\n",
+            colorChosen: `Colore scelto: ${selectedColor}\n`,
+            optionsChosen: `Opzioni scelte: ${selectedOptions}\n`,
+            companyInfo:
+              "KBMedizintechnik\nGewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch",
+          },
+        };
+
+        const msg = messages[language];
+        return `
+${msg.subject}\n
+${msg.greeting}
+${msg.confirmation}
+${msg.contact}
+${msg.thankYou}
+${msg.seeYouSoon}
+${msg.recap}
+${msg.colorChosen}
+${msg.optionsChosen}
+${msg.companyInfo}
+        `;
+      }
+
+      function completeEmailSending(success) {
+        const loadingSpinner = document.querySelector(".loading-spinner");
+        if (loadingSpinner) {
+          loadingSpinner.classList.add("hide");
+        }
+        if (success) {
+          alert(
+            "Votre configuration a été enregistrée et un email récapitulatif vous a été envoyé."
+          );
+          closeSummaryModal();
+        } else {
+          alert(
+            "Une erreur est survenue lors de l'envoi de l'email. Veuillez réessayer."
+          );
+        }
+      }
+
+      function closeCoordinatesModal() {
+        const coordinatesModal = document.getElementById("coordinatesModal");
+        coordinatesModal.classList.remove("active");
+      }
+
+      function openSummaryModal() {
+        // Récupération de la couleur depuis un élément ou sessionStorage
+        let selectedColor = "";
+        // Ici, vous pouvez adapter la méthode de récupération de couleur
+        const selectedColorElement = document.getElementById("selectedColor");
+        if (selectedColorElement) {
+          selectedColor = selectedColorElement.textContent.trim();
+        } else {
+          selectedColor = sessionStorage.getItem("selectedColor") || "Non défini";
+        }
+        // Mettre à jour le nom de la couleur dans le récapitulatif
+        document.getElementById("colorName").textContent = selectedColor;
+        // Exemple simple : associer la classe de couleur à la sample
+        // Ici, nous supposons que la couleur récupérée correspond à une classe CSS définie comme .color-ralXXXX
+        // Vous pouvez adapter en fonction de votre logique de sélection couleur
+        document
+          .getElementById("colorSample")
+          .className = "color-sample " + (selectedColor || "").toLowerCase().replace(/\s/g, "");
+
+        // Récupération des options depuis le sessionStorage
+        const storedOptions = sessionStorage.getItem("selectedOptions");
+        let selectedOptions = storedOptions
+          ? JSON.parse(storedOptions).join(", ")
+          : "Aucune option sélectionnée";
+
+        document.getElementById("summaryOptions").textContent =
+          "Options choisies : " + selectedOptions;
+
+        const summaryModal = document.getElementById("summaryModal");
+        summaryModal.classList.add("active");
+      }
+
+      function closeSummaryModal() {
+        const summaryModal = document.getElementById("summaryModal");
+        summaryModal.classList.remove("active");
+      }
+    </script>
+
+    <!-- ======================================
+         Script de gestion des modals et de la langue
+    ====================================== -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Gestion des popups
+        const openOptionsBtn = document.getElementById("openOptionsBtn");
+        const optionsModal = document.getElementById("optionsModal");
+        const validateOptionsBtn = document.getElementById("validateOptions");
+        const closeOptionsBtn = document.getElementById("closeOptions");
+
+        const coordinatesModal = document.getElementById("coordinatesModal");
+        const closeCoordinatesBtn = document.getElementById("closeCoordinates");
+
+        const summaryModal = document.getElementById("summaryModal");
+        const closeSummaryBtn = document.getElementById("closeSummary");
+        const confirmOrderBtn = document.getElementById("confirmOrder");
+
+        openOptionsBtn.addEventListener("click", function () {
+          optionsModal.classList.add("active");
+        });
+
+        validateOptionsBtn.addEventListener("click", function () {
+          const checkedOptions = document.querySelectorAll(
+            ".checkbox-container input[type='checkbox']:checked"
+          );
+          const selectedOptions = Array.from(checkedOptions).map((checkbox) =>
+            checkbox
+              .closest(".checkbox-container")
+              .querySelector(".label").textContent
+          );
+          sessionStorage.setItem("selectedOptions", JSON.stringify(selectedOptions));
+          console.log("Options sélectionnées :", selectedOptions);
+          optionsModal.classList.remove("active");
+          coordinatesModal.classList.add("active");
+        });
+
+        if (closeOptionsBtn) {
+          closeOptionsBtn.addEventListener("click", function () {
+            optionsModal.classList.remove("active");
+          });
+        }
+
+        if (closeCoordinatesBtn) {
+          closeCoordinatesBtn.addEventListener("click", function () {
+            coordinatesModal.classList.remove("active");
+          });
+        }
+
+        if (closeSummaryBtn) {
+          closeSummaryBtn.addEventListener("click", function () {
+            summaryModal.classList.remove("active");
+          });
+        }
+
+        // Envoi du mail lors du clic sur "Confirmer" dans le popup récapitulatif
+        confirmOrderBtn.addEventListener("click", function () {
+          sendConfigurationEmail();
+        });
+
+        // Gestion du changement de langue
+        const languageSelectors = document.querySelectorAll(".language-selector");
+        languageSelectors.forEach((selector) => {
+          selector.addEventListener("click", function () {
+            languageSelectors.forEach((el) =>
+              el.classList.remove("active")
+            );
+            this.classList.add("active");
+            // Ici, vous pouvez définir la langue sélectionnée (ex: window.currentLanguage)
+            window.currentLanguage = this.querySelector("img").getAttribute("data-lang");
+            console.log("Langue sélectionnée :", window.currentLanguage);
+          });
+        });
+      });
+    </script>
+  </body>
 </html>
