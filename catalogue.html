@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KB MED - Catalogue</title>
+    <!-- CSS Styles -->
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/components/header.css" />
+    <link rel="stylesheet" href="css/components/footer.css" />
+    <link rel="stylesheet" href="css/components/navigation.css" />
+    <link rel="stylesheet" href="css/components/dropdown.css" />
+    <link rel="stylesheet" href="css/components/buttons.css" />
+    <link rel="stylesheet" href="css/components/colors.css" />
+    <link rel="stylesheet" href="css/components/forms.css" />
+    <link rel="stylesheet" href="css/pages/catalogue.css" />
+    <link
+      rel="shortcut icon"
+      href="assets/icons/favicon.webp"
+      type="image/x-icon"
+    />
+    <style>
+      .pdf-container {
+        width: 100%;
+        min-height: 400px; /* ajustez en fonction de votre design */
+        border: none;
+      }
+      @media (max-width: 600px) {
+        .pdf-container {
+          height: 400px; /* ou une autre hauteur adaptée */
+        }
+      }
+
+      .language-selector {
+        cursor: pointer;
+        filter: grayscale(0.7);
+        transition: filter 0.3s ease, transform 0.2s ease;
+      }
+      .language-selector.active,
+      .language-selector:hover {
+        filter: grayscale(0);
+        transform: scale(1.05);
+      }
+      embed {
+        position: relative;
+        z-index: 999;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="main-header">
+      <button class="settings-btn" id="settingsBtn" aria-label="Paramètres">
+        <img src="assets/icons/settings.svg" alt="Paramètres" />
+      </button>
+      <div class="logo">
+        <img class="logo-img" src="assets/logos/kbmed.svg" alt="KB MED" />
+      </div>
+      <button class="burger-btn" id="burgerBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
+
+    <!-- Menu de navigation -->
+    <nav class="main-nav" id="mainNav">
+      <button class="nav-close" id="navClose">&times;</button>
+      <a href="index.html" class="nav-item" data-translate="navigation.machine1"
+        >MODULA L</a
+      >
+      <a
+        href="modula-m.html"
+        class="nav-item"
+        data-translate="navigation.machine2"
+        >MODULA M</a
+      >
+      <a
+        href="catalogue.html"
+        class="nav-item active"
+        data-translate="navigation.catalogue"
+        >CATALOGUE</a
+      >
+      <div class="nav-background"></div>
+    </nav>
+
+    <!-- Menu des paramètres -->
+    <div class="settings-menu" id="settingsMenu">
+      <div class="settings-item">
+        <div class="language-selector active">
+          <img src="assets/icons/flag-fr.svg" alt="Français" data-lang="fr" />
+        </div>
+        <div class="language-selector">
+          <img src="assets/icons/flag-de.svg" alt="Allemand" data-lang="de" />
+        </div>
+        <div class="language-selector">
+          <img src="assets/icons/flag-it.svg" alt="Italie" data-lang="it" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Contenu principal -->
+    <main>
+      <!-- Intégration du PDF dans un iframe pour consultation directe -->
+      <!-- Veuillez modifier "assets/documents/catalogue.pdf" par le chemin de votre PDF -->
+      <!-- <iframe
+  class="pdf-container"
+  src="assets/documents/catalogue.pdf"
+  title="Catalogue KB MED"
+  width="100%"
+  height="600px"
+  style="border: 1px solid #ccc;"
+></iframe> -->
+      <!-- <embed
+  src="assets/documents/catalogue.pdf"
+  type="application/pdf"
+  width="100%"
+  height="600px"
+/> -->
+
+      <a href="assets/documents/catalogue.pdf" target="_blank"
+        ><button
+          class="cta-button button"
+          data-translate="general.seeMore"
+        >
+          Voir le catalogue
+        </button></a
+      >
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+      <div class="footer-logo">
+        <img
+          class="footer-logo-img"
+          src="assets/logos/kbmed.svg"
+          alt="KB MED"
+        />
+        <p class="footer-logo-text" data-translate="general.copyright"></p>
+      </div>
+      <p class="follow-text" data-translate="general.follow"></p>
+      <div class="social-links">
+        <a href="#"><img src="assets/icons/instagram.svg" alt="Instagram" /></a>
+        <a href="#"><img src="assets/icons/facebook.svg" alt="Facebook" /></a>
+        <a href="#"><img src="assets/icons/linkedin.svg" alt="LinkedIn" /></a>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/components/navigation.js"></script>
+    <script>
+      //         document.addEventListener('DOMContentLoaded', function() {
+      //   var pdfIframe = document.querySelector('.pdf-container');
+      //   if (pdfIframe) {
+      //     // Ajout d'un paramètre unique pour forcer le rechargement sur appareil mobile
+      //     pdfIframe.src = pdfIframe.src + '?t=' + new Date().getTime();
+      //   }
+      // });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const languageSelectors =
+          document.querySelectorAll(".language-selector");
+        languageSelectors.forEach((selector) => {
+          selector.addEventListener("click", function () {
+            languageSelectors.forEach((el) => el.classList.remove("active"));
+            this.classList.add("active");
+            // Définissez la langue globale, par exemple :
+            window.currentLanguage =
+              this.querySelector("img").getAttribute("data-lang");
+            console.log("Langue sélectionnée :", window.currentLanguage);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -20,7 +20,6 @@ function changeLanguage(lang) {
     }
   });
 }
-emailjs.init("atUIFstP0TCmRcmjx");
 
 // main.js - Gestion des traductions
 const translations = {
