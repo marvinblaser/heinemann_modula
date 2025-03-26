@@ -1,22 +1,20 @@
 /* Boutons */
 .button {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    padding: 12px 20px;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: var(--border-radius-md);
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
-  }
-  
-  .button:hover {
-    background-color: #2d4373;
-  }
+  background-color: #005a9c;
+  color: #fff;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: inline-block;
+  text-align: center;
+}
+.button:hover {
+  background-color: #004a85;
+  transform: translateY(-2px);
+}
   
   .button:active {
     transform: translateY(1px);

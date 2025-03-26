@@ -1,134 +1,133 @@
-emailjs.init("atUIFstP0TCmRcmjx");
-const EMAIL_SERVICE_ID = 'service_pff2cmo';
-const EMAIL_TEMPLATE_ID = 'template_50exznp'; 
+document.addEventListener("DOMContentLoaded", function () {
+    initFormValidation();
+  });
 
-document.addEventListener('DOMContentLoaded', function() {
-    const confirmBtn = document.querySelector('.confirm-btn');
-    if (confirmBtn) {
-        confirmBtn.addEventListener('click', sendConfigurationEmail);
+  function initFormValidation() {
+    const forms = document.querySelectorAll("form");
+
+    forms.forEach((form) => {
+      form.addEventListener("submit", function (e) {
+        if (form.getAttribute("data-js-submit") === "true") {
+          e.preventDefault();
+        }
+        if (!validateForm(form)) {
+          e.preventDefault();
+        } else {
+          console.log("Formulaire validé !");
+          // Pour le formulaire des coordonnées, on passe au popup récapitulatif
+          if (form.id === "userInfoForm") {
+            closeCoordinatesModal();
+            openSummaryModal();
+          } else {
+            sendConfigurationEmail();
+          }
+        }
+      });
+
+      const inputs = form.querySelectorAll("input, select, textarea");
+      inputs.forEach((input) => {
+        input.addEventListener("blur", function () {
+          validateInput(this);
+        });
+        input.addEventListener("input", function () {
+          if (this.classList.contains("invalid")) {
+            this.classList.remove("invalid");
+            const errorMessage = this.nextElementSibling;
+            if (
+              errorMessage &&
+              errorMessage.classList.contains("error-message")
+            ) {
+              errorMessage.remove();
+            }
+          }
+        });
+      });
+    });
+  }
+
+  function validateForm(form) {
+    let isValid = true;
+    const inputs = form.querySelectorAll("input, select, textarea");
+    inputs.forEach((input) => {
+      if (!validateInput(input)) {
+        isValid = false;
+      }
+    });
+    return isValid;
+  }
+
+  function validateInput(input) {
+    if (input.disabled || input.readOnly) {
+      return true;
     }
-});
-
-function sendConfigurationEmail() {
-    const loadingSpinner = document.querySelector('.loading-spinner');
-    if (loadingSpinner) {
-        loadingSpinner.classList.remove('hide');
+    let isValid = true;
+    let errorMessage = "";
+    const existingError = input.nextElementSibling;
+    if (
+      existingError &&
+      existingError.classList.contains("error-message")
+    ) {
+      existingError.remove();
     }
+    if (input.hasAttribute("required") && !input.value.trim()) {
+      isValid = false;
+      errorMessage = "Ce champ est requis";
+    } else if (
+      input.type === "email" &&
+      input.value.trim() &&
+      !validateEmail(input.value)
+    ) {
+      isValid = false;
+      errorMessage = "Veuillez entrer une adresse email valide";
+    } else if (input.hasAttribute("pattern") && input.value.trim()) {
+      const pattern = new RegExp(input.getAttribute("pattern"));
+      if (!pattern.test(input.value)) {
+        isValid = false;
+        errorMessage = input.title || "Format invalide";
+      }
+    } else if (
+      input.hasAttribute("minlength") &&
+      input.value.length < parseInt(input.getAttribute("minlength"))
+    ) {
+      isValid = false;
+      errorMessage = `Minimum ${input.getAttribute(
+        "minlength"
+      )} caractères requis`;
+    }
+    if (!isValid) {
+      input.classList.add("invalid");
+      const errorElement = document.createElement("div");
+      errorElement.classList.add("error-message");
+      errorElement.textContent = errorMessage;
+      input.insertAdjacentElement("afterend", errorElement);
+    } else {
+      input.classList.remove("invalid");
+    }
+    return isValid;
+  }
 
-    const name = document.getElementById('name').value.trim();
-    const firstname = document.getElementById('firstname').value.trim();
-    const email = document.getElementById('email').value.trim();
+  function validateEmail(email) {
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return re.test(String(email).toLowerCase());
+  }
+
+  // ========================================================
+  // Envoi de l'email via EmailJS
+  // ========================================================
+  const EMAIL_SERVICE_ID = "service_pff2cmo";
+  const EMAIL_TEMPLATE_ID = "template_50exznp";
+
+  function sendConfigurationEmail() {
+    const loadingSpinner = document.querySelector(".loading-spinner");
+    if (loadingSpinner) loadingSpinner.classList.remove("hide");
+
+    const name = document.getElementById("name").value.trim();
+    const firstname = document.getElementById("firstname").value.trim();
+    const email = document.getElementById("email").value.trim();
 
     if (!email) {
-        alert('Veuillez entrer une adresse email.');
-        if (loadingSpinner) loadingSpinner.classList.add('hide');
-        return;
+      alert("Veuillez entrer une adresse email.");
+      if (loadingSpinner) loadingSpinner.classList.add("hide");
+      return;
     }
-
-    const selectedColorElement = document.getElementById('selectedColor');
-    const selectedColor = selectedColorElement ? selectedColorElement.textContent : '';
-
-    const selectedOptionsElement = document.getElementById('selectedOptions');
-    const selectedOptions = selectedOptionsElement ?
-        Array.from(selectedOptionsElement.querySelectorAll('li')).map(li => li.textContent).join(', ') : '';
-
-    // Récupérer la langue sélectionnée
-    const selectedLanguage = currentLanguage; // Utiliser la langue actuelle
-
-    // Préparer le contenu de l'email en fonction de la langue
-    const emailContent = prepareEmailContent(selectedLanguage, firstname, selectedColor, selectedOptions);
-
-    const templateParams = {
-        to_name: `${firstname} ${name}`,
-        to_email: email,
-        message: emailContent // Utiliser le contenu préparé
-    };
-
-    emailjs.send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, templateParams)
-        .then(function(response) {
-            console.log('SUCCESS!', response.status, response.text);
-            completeEmailSending(true);
-        }, function(error) {
-            console.log('FAILED...', error);
-            completeEmailSending(false);
-        });
-}
-
-// Fonction pour préparer le contenu de l'email
-function prepareEmailContent(language, firstname, selectedColor, selectedOptions) {
-    const messages = {
-        fr: {
-            subject: '🎉 Votre configuration a été enregistrée !',
-            greeting: `Bonjour ${firstname},\n`,
-            confirmation: 'Nous confirmons que votre configuration pour le MODULA M a été enregistrée.\n',
-            contact: 'Nous vous contacterons dès que possible.\n',
-            thankYou: 'Merci pour votre intérêt.\n',
-            seeYouSoon: 'À bientôt !\n',
-            recap: 'Récapitulatif de votre commande :\n',
-            colorChosen: `Couleur choisie : ${selectedColor}\n`,
-            optionsChosen: `Options choisies : ${selectedOptions}\n`,
-            companyInfo: `Gewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch`
-        },
-        de: {
-            subject: '🎉 Ihre Konfiguration wurde gespeichert!',
-            greeting: `Guten Tag ${firstname},\n`,
-            confirmation: 'Wir bestätigen, dass Ihre Konfiguration für MODULA M gespeichert wurde.\n',
-            contact: 'Wir werden Sie so schnell wie möglich kontaktieren.\n',
-            thankYou: 'Danke für Ihr Interesse.\n',
-            seeYouSoon: 'Bis bald!\n',
-            recap: 'Zusammenfassung Ihrer Bestellung:\n',
-            colorChosen: `Gewählte Farbe: ${selectedColor}\n`,
-            optionsChosen: `Gewählte Optionen: ${selectedOptions}\n`,
-            companyInfo: `Gewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch`
-        },
-        it: {
-            subject: '🎉 La tua configurazione è stata salvata!',
-            greeting: `Buongiorno ${firstname},\n`,
-            confirmation: 'Confermiamo che la configurazione del MODULA M è stata salvata.\n',
-            contact: 'Ti contatteremo il prima possibile.\n',
-            thankYou: 'Grazie per il tuo interesse.\n',
-            seeYouSoon: 'A presto!\n',
-            recap: 'Riepilogo del tuo ordine:\n',
-            colorChosen: `Colore scelto: ${selectedColor}\n`,
-            optionsChosen: `Opzioni scelte: ${selectedOptions}\n`,
-            companyInfo: `Gewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch`
-        },
-    };
-
-    const msg = messages[language]; // Accéder directement à l'objet de la langue
-    return `
-        ${msg.subject}\n
-        ${msg.greeting}
-        ${msg.confirmation}
-        ${msg.contact}
-        ${msg.thankYou}
-        ${msg.seeYouSoon}
-        ${msg.recap}
-        ${msg.colorChosen}
-        ${msg.optionsChosen}
-        ${msg.companyInfo}
-    `;
-}
-
-
-
-
-
-function completeEmailSending(success) {
-    const loadingSpinner = document.querySelector('.loading-spinner');
-    if (loadingSpinner) {
-        loadingSpinner.classList.add('hide');
-    }
-
-    const step2 = document.getElementById('modalStep2');
-    const step3 = document.getElementById('modalStep3');
-
-    if (success) {
-        if (step2 && step3) {
-            step2.classList.remove('active');
-            step3.classList.add('active');
-        }
-    } else {
-        alert('Une erreur est survenue lors de l\'envoi de l\'email. Veuillez réessayer.');
-    }
-}
+  }

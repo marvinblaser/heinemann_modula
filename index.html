@@ -20,200 +20,7 @@
       href="assets/icons/favicon.webp"
       type="image/x-icon"
     />
-    <!-- EmailJS -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <style>
-      /* ===============================
-         Styles généraux pour les modals
-      =============================== */
-      .modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1000;
-        width: 100%;
-        height: 100%;
-        padding: 20px;
-        background-color: rgba(0, 0, 0, 0.5);
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s ease, visibility 0.3s ease;
-        overflow-y: auto;
-      }
-      .modal.active {
-        opacity: 1;
-        visibility: visible;
-      }
-      .modal-content {
-        background: #fff;
-        max-width: 600px;
-        margin: 60px auto;
-        padding: 30px;
-        border-radius: 8px;
-        position: relative;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        animation: slideDown 0.3s ease;
-      }
-      @keyframes slideDown {
-        from {
-          opacity: 0;
-          transform: translateY(-10%);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .modal-close {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        background: none;
-        border: none;
-        font-size: 28px;
-        color: #333;
-        cursor: pointer;
-        transition: color 0.2s ease;
-      }
-      .modal-close:hover {
-        color: #000;
-      }
-      /* ===============================
-         Styles pour la liste d'options
-      =============================== */
-      .options-list {
-        overflow-y: auto;
-        border: 1px solid #ccc;
-        padding: 15px;
-        border-radius: 6px;
-        margin-bottom: 20px;
-        background-color: #fefefe;
-      }
-      .checkbox-container {
-        display: flex;
-        align-items: center;
-        margin-bottom: 12px;
-        padding: 5px 0;
-        transition: background-color 0.2s ease;
-      }
-      .checkbox-container:hover {
-        background-color: #fafafa;
-      }
-      .checkbox {
-        flex: 0 0 24px;
-        width: 24px;
-        height: 24px;
-        border: 2px solid #333;
-        border-radius: 4px;
-        margin-right: 12px;
-      }
-      .label {
-        flex: 1;
-        font-size: 1rem;
-        color: #333;
-      }
-      /* ===============================
-         Styles pour les boutons et formulaires
-      =============================== */
-      .button {
-        background-color: #005a9c;
-        color: #fff;
-        padding: 12px 24px;
-        font-size: 1rem;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-        display: inline-block;
-        text-align: center;
-      }
-      .button:hover {
-        background-color: #004a85;
-        transform: translateY(-2px);
-      }
-      .form-group {
-        margin-bottom: 16px;
-      }
-      .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: bold;
-        color: #333;
-      }
-      .form-group input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 1rem;
-        transition: border-color 0.3s ease;
-      }
-      .form-group input:focus {
-        border-color: #005a9c;
-        outline: none;
-      }
-      .error-message {
-        color: #d8000c;
-        font-size: 0.875rem;
-        margin-top: 4px;
-      }
-      /* ===============================
-         Spinner de chargement (facultatif)
-      =============================== */
-      .loading-spinner {
-        width: 50px;
-        height: 50px;
-        border: 6px solid #f3f3f3;
-        border-top: 6px solid #005a9c;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 20px auto;
-      }
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-      /* ===============================
-         Styles spécifiques du popup récapitulatif
-      =============================== */
-      #summaryModal p {
-        margin-bottom: 16px;
-        font-size: 1.1rem;
-        line-height: 1.6;
-        color: #333;
-      }
-      /* Le carré qui affichera la couleur sur le popup récapitulatif */
-      .color-sample {
-        display: inline-block;
-        vertical-align: middle;
-        width: 20px;
-        height: 20px;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-        margin-right: 8px;
-      }
-      /* ===============================
-         Styles pour les sélecteurs de langue
-      =============================== */
-      .settings-item {
-        display: flex;
-        gap: 12px;
-      }
-      .language-selector {
-        cursor: pointer;
-        filter: grayscale(.7);
-        transition: filter 0.3s ease, transform 0.2s ease;
-      }
-      .language-selector.active,
-      .language-selector:hover {
-        filter: grayscale(0);
-        transform: scale(1.05);
-      }
-    </style>
   </head>
   <body>
     <!-- Header -->
@@ -998,7 +805,6 @@
          Script de validation et envoi d'email
     ====================================== -->
     <script>
-      
       document.addEventListener("DOMContentLoaded", function () {
         initFormValidation();
       });
@@ -1162,18 +968,16 @@
           message: emailContent,
         };
 
-        emailjs
-          .send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, templateParams)
-          .then(
-            function (response) {
-              console.log("SUCCESS!", response.status, response.text);
-              completeEmailSending(true);
-            },
-            function (error) {
-              console.log("FAILED...", error);
-              completeEmailSending(false);
-            }
-          );
+        emailjs.send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, templateParams).then(
+          function (response) {
+            console.log("SUCCESS!", response.status, response.text);
+            completeEmailSending(true);
+          },
+          function (error) {
+            console.log("FAILED...", error);
+            completeEmailSending(false);
+          }
+        );
       }
 
       function prepareEmailContent(
@@ -1279,9 +1083,9 @@ ${msg.companyInfo}
         // Exemple simple : associer la classe de couleur à la sample
         // Ici, nous supposons que la couleur récupérée correspond à une classe CSS définie comme .color-ralXXXX
         // Vous pouvez adapter en fonction de votre logique de sélection couleur
-        document
-          .getElementById("colorSample")
-          .className = "color-sample " + (selectedColor || "").toLowerCase().replace(/\s/g, "");
+        document.getElementById("colorSample").className =
+          "color-sample " +
+          (selectedColor || "").toLowerCase().replace(/\s/g, "");
 
         // Récupération des options depuis le sessionStorage
         const storedOptions = sessionStorage.getItem("selectedOptions");
@@ -1328,12 +1132,15 @@ ${msg.companyInfo}
           const checkedOptions = document.querySelectorAll(
             ".checkbox-container input[type='checkbox']:checked"
           );
-          const selectedOptions = Array.from(checkedOptions).map((checkbox) =>
-            checkbox
-              .closest(".checkbox-container")
-              .querySelector(".label").textContent
+          const selectedOptions = Array.from(checkedOptions).map(
+            (checkbox) =>
+              checkbox.closest(".checkbox-container").querySelector(".label")
+                .textContent
           );
-          sessionStorage.setItem("selectedOptions", JSON.stringify(selectedOptions));
+          sessionStorage.setItem(
+            "selectedOptions",
+            JSON.stringify(selectedOptions)
+          );
           console.log("Options sélectionnées :", selectedOptions);
           optionsModal.classList.remove("active");
           coordinatesModal.classList.add("active");
@@ -1363,15 +1170,15 @@ ${msg.companyInfo}
         });
 
         // Gestion du changement de langue
-        const languageSelectors = document.querySelectorAll(".language-selector");
+        const languageSelectors =
+          document.querySelectorAll(".language-selector");
         languageSelectors.forEach((selector) => {
           selector.addEventListener("click", function () {
-            languageSelectors.forEach((el) =>
-              el.classList.remove("active")
-            );
+            languageSelectors.forEach((el) => el.classList.remove("active"));
             this.classList.add("active");
             // Ici, vous pouvez définir la langue sélectionnée (ex: window.currentLanguage)
-            window.currentLanguage = this.querySelector("img").getAttribute("data-lang");
+            window.currentLanguage =
+              this.querySelector("img").getAttribute("data-lang");
             console.log("Langue sélectionnée :", window.currentLanguage);
           });
         });
