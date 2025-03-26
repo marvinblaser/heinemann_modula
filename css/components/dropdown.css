@@ -1,8 +1,19 @@
 /* Style des accordéons */
 .accordion-item {
     border-bottom: 1px solid var(--border-color);
+    
   }
   
+  .accordion-header .chevron {
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+  
+  .accordion-header.active .chevron,
+  .accordion-header.rotated .chevron {
+    transform: rotate(180deg);
+  }
+
   .accordion-header {
     display: flex;
     justify-content: space-between;

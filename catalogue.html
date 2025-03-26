@@ -48,10 +48,17 @@
         position: relative;
         z-index: 999;
       }
-      catalogue-flex{
+      .catalogue-flex{
         display: flex;
         flex-direction: column;
         gap: 20px;
+        width: 70%;
+        padding: 0 0 50px 0;
+      }
+      @media (min-width: 768px) {
+        .catalogue-flex{
+          width: 30%;
+        }
       }
     </style>
   </head>
@@ -130,7 +137,7 @@
 
       <a href="assets/documents/catalogue.pdf" target="_blank" class="catalogue-flex"
         >
-        <img src="assets/img/catalogue-img.png" alt="Première page du catalogue">
+        <img src="assets/img/catalogue-img.png" alt="Première page du catalogue" style="width:100%;">
         <button
           class="cta-button button"
           data-translate="general.seeMore"

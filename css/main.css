@@ -144,6 +144,10 @@
   main {
     padding: 0 var(--spacing-md) var(--spacing-lg);
     min-height: calc(100vh - 130px); /* Pour que le footer reste en bas */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   .color-dark {

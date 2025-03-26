@@ -313,9 +313,9 @@ const translations = {
       it: "Adattatore per custodie in acciaio inox, per endoscopi flessibili XION EN-F",
     },
     saveConfig: {
-      fr: "Enregistrer ma configuration",
-      de: "Konfiguration speichern",
-      it: "Salva la mia configurazione",
+      fr: "Aller au configurateur",
+      de: "Zum Konfigurator gehen",
+      it: "Vai al configuratore",
     },
   },
   form: {
