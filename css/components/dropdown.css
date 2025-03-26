@@ -4,11 +4,6 @@
     
   }
   
-  .accordion-header .chevron {
-    display: inline-block;
-    transition: transform 0.3s ease;
-  }
-  
   .accordion-header.active .chevron,
   .accordion-header.rotated .chevron {
     transform: rotate(180deg);
