@@ -994,7 +994,10 @@
     ====================================== -->
     <script>
       
-      document.addEventListener("DOMContentLoaded", function () {
+     // ========================================================
+// Configuration EmailJS et initialisation
+// ========================================================
+document.addEventListener("DOMContentLoaded", function () {
   // Initialisation EmailJS (obligatoire avec la version CDN)
   emailjs.init({
     publicKey: "atUIFstP0TCmRcmjx"
@@ -1010,95 +1013,6 @@ const EMAILJS_CONFIG = {
   SERVICE_ID: 'service_1g0zipm',
   TEMPLATE_ID: 'template_50exznp'
 };
-
-// ========================================================
-// Gestion des formulaires et validation
-// ========================================================
-function initFormValidation() {
-  const forms = document.querySelectorAll("form");
-
-  forms.forEach((form) => {
-    form.addEventListener("submit", function (e) {
-      if (form.getAttribute("data-js-submit") === "true") {
-        e.preventDefault();
-      }
-      if (!validateForm(form)) {
-        e.preventDefault();
-      } else {
-        console.log("Formulaire validé !");
-        if (form.id === "userInfoForm") {
-          closeCoordinatesModal();
-          openSummaryModal();
-        }
-      }
-    });
-
-    const inputs = form.querySelectorAll("input, select, textarea");
-    inputs.forEach((input) => {
-      input.addEventListener("blur", function () {
-        validateInput(this);
-      });
-      input.addEventListener("input", function () {
-        if (this.classList.contains("invalid")) {
-          this.classList.remove("invalid");
-          const errorMessage = this.nextElementSibling;
-          if (errorMessage && errorMessage.classList.contains("error-message")) {
-            errorMessage.remove();
-          }
-        }
-      });
-    });
-  });
-}
-
-function validateForm(form) {
-  let isValid = true;
-  const inputs = form.querySelectorAll("input, select, textarea");
-  inputs.forEach((input) => {
-    if (!validateInput(input)) {
-      isValid = false;
-    }
-  });
-  return isValid;
-}
-
-function validateInput(input) {
-  if (input.disabled || input.readOnly) {
-    return true;
-  }
-  let isValid = true;
-  let errorMessage = "";
-  const existingError = input.nextElementSibling;
-  if (existingError && existingError.classList.contains("error-message")) {
-    existingError.remove();
-  }
-  if (input.hasAttribute("required") && !input.value.trim()) {
-    isValid = false;
-    errorMessage = "Ce champ est requis";
-  } else if (
-    input.type === "email" &&
-    input.value.trim() &&
-    !validateEmail(input.value)
-  ) {
-    isValid = false;
-    errorMessage = "Veuillez entrer une adresse email valide";
-  }
-  if (!isValid) {
-    input.classList.add("invalid");
-    const errorElement = document.createElement("div");
-    errorElement.classList.add("error-message");
-    errorElement.textContent = errorMessage;
-    input.insertAdjacentElement("afterend", errorElement);
-  } else {
-    input.classList.remove("invalid");
-  }
-  return isValid;
-}
-
-function validateEmail(email) {
-  const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return re.test(String(email).toLowerCase());
-}
 
 // ========================================================
 // Envoi de l'email via EmailJS (VERSION CORRIGÉE)
@@ -1126,7 +1040,6 @@ async function sendConfigurationEmail() {
     let selectedColor = "Non spécifiée";
     const colorElement = document.querySelector('.color-option.active');
     if (colorElement) {
-      // Récupérer la classe de couleur (ex: color-ral9016)
       const colorClass = Array.from(colorElement.classList).find(cls => cls.startsWith('color-ral'));
       if (colorClass) {
         selectedColor = colorClass.replace('color-', '').toUpperCase();
@@ -1142,20 +1055,18 @@ async function sendConfigurationEmail() {
     // Langue actuelle
     const selectedLanguage = window.currentLanguage || "fr";
 
-    // Préparation du contenu email
-    const emailContent = prepareEmailContent(
+    // Préparation du contenu email complet
+    const emailContent = prepareFullEmailContent(
       selectedLanguage,
       firstname,
+      name,
       selectedColor,
       selectedOptions
     );
 
-    // Paramètres pour le template EmailJS
+    // IMPORTANT: Seuls les paramètres utilisés dans le template
     const templateParams = {
-      to_name: `${firstname} ${name}`.trim(),
       to_email: email,
-      from_name: "KBMED",
-      subject: getEmailSubject(selectedLanguage),
       message: emailContent
     };
 
@@ -1177,11 +1088,14 @@ async function sendConfigurationEmail() {
     let errorMessage = "Une erreur est survenue lors de l'envoi de l'email.";
     
     if (error.status === 400) {
-      errorMessage = "Erreur de configuration EmailJS. Vérifiez votre template.";
+      errorMessage = "Erreur de paramètres. Vérifiez les données saisies.";
     } else if (error.status === 401) {
       errorMessage = "Clé publique EmailJS invalide.";
     } else if (error.status === 404) {
       errorMessage = "Service ou template EmailJS introuvable.";
+    } else if (error.text) {
+      console.error('Détail erreur:', error.text);
+      errorMessage = `Erreur: ${error.text}`;
     } else if (error.message) {
       errorMessage = error.message;
     }
@@ -1196,51 +1110,74 @@ async function sendConfigurationEmail() {
   }
 }
 
-// Fonction pour obtenir le sujet selon la langue
-function getEmailSubject(language) {
-  const subjects = {
-    fr: '🎉 Votre configuration MODULA L a été enregistrée !',
-    de: '🎉 Ihre MODULA L Konfiguration wurde gespeichert!',
-    it: '🎉 La tua configurazione MODULA L è stata salvata!'
-  };
-  return subjects[language] || subjects.fr;
-}
-
-// Fonction pour préparer le contenu de l'email
-function prepareEmailContent(language, firstname, selectedColor, selectedOptions) {
+// Fonction pour préparer le contenu COMPLET de l'email (avec sujet inclus)
+function prepareFullEmailContent(language, firstname, name, selectedColor, selectedOptions) {
   const messages = {
     fr: {
-      greeting: `Bonjour ${firstname},`,
+      subject: '🎉 Votre configuration MODULA L a été enregistrée !',
+      greeting: `Bonjour ${firstname} ${name},`,
       confirmation: 'Nous confirmons que votre configuration pour le MODULA L a été enregistrée.',
-      contact: 'Nous vous contacterons dès que possible.',
-      thankYou: 'Merci pour votre intérêt.',
+      contact: 'Nous vous contacterons dès que possible pour finaliser votre commande.',
+      thankYou: 'Merci pour votre confiance.',
       seeYouSoon: 'À bientôt !',
-      recap: 'Récapitulatif de votre commande :',
-      colorChosen: `Couleur choisie : ${selectedColor}`,
-      optionsChosen: `Options choisies : ${selectedOptions}`,
-      companyInfo: `KBMED\nGewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch`
+      recap: 'RÉCAPITULATIF DE VOTRE CONFIGURATION :',
+      colorChosen: `• Couleur sélectionnée : ${selectedColor}`,
+      optionsChosen: `• Options choisies : ${selectedOptions}`,
+      companyInfo: `
+---
+KBMED Medizintechnik
+Gewerbestrasse 6
+4105 Biel-Benken
+Suisse
+
+📞 Büro : +41 61 331 68 51
+📱 Mobile : +41 78 683 68 28
+📠 Fax : +41 61 331 68 52
+✉️ Email : info@kbmed.ch`
     },
     de: {
-      greeting: `Guten Tag ${firstname},`,
-      confirmation: 'Wir bestätigen, dass Ihre Konfiguration für MODULA L gespeichert wurde.',
-      contact: 'Wir werden Sie so schnell wie möglich kontaktieren.',
-      thankYou: 'Danke für Ihr Interesse.',
+      subject: '🎉 Ihre MODULA L Konfiguration wurde gespeichert!',
+      greeting: `Guten Tag ${firstname} ${name},`,
+      confirmation: 'Wir bestätigen, dass Ihre Konfiguration für den MODULA L gespeichert wurde.',
+      contact: 'Wir werden Sie so schnell wie möglich kontaktieren, um Ihre Bestellung abzuschliessen.',
+      thankYou: 'Vielen Dank für Ihr Vertrauen.',
       seeYouSoon: 'Bis bald!',
-      recap: 'Zusammenfassung Ihrer Bestellung:',
-      colorChosen: `Gewählte Farbe: ${selectedColor}`,
-      optionsChosen: `Gewählte Optionen: ${selectedOptions}`,
-      companyInfo: `KBMED\nGewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch`
+      recap: 'ZUSAMMENFASSUNG IHRER KONFIGURATION:',
+      colorChosen: `• Gewählte Farbe: ${selectedColor}`,
+      optionsChosen: `• Gewählte Optionen: ${selectedOptions}`,
+      companyInfo: `
+---
+KBMED Medizintechnik
+Gewerbestrasse 6
+4105 Biel-Benken
+Schweiz
+
+📞 Büro : +41 61 331 68 51
+📱 Mobile : +41 78 683 68 28
+📠 Fax : +41 61 331 68 52
+✉️ Email : info@kbmed.ch`
     },
     it: {
-      greeting: `Buongiorno ${firstname},`,
+      subject: '🎉 La tua configurazione MODULA L è stata salvata!',
+      greeting: `Buongiorno ${firstname} ${name},`,
       confirmation: 'Confermiamo che la configurazione del MODULA L è stata salvata.',
-      contact: 'Ti contatteremo il prima possibile.',
-      thankYou: 'Grazie per il tuo interesse.',
+      contact: 'Ti contatteremo il prima possibile per finalizzare il tuo ordine.',
+      thankYou: 'Grazie per la tua fiducia.',
       seeYouSoon: 'A presto!',
-      recap: 'Riepilogo del tuo ordine:',
-      colorChosen: `Colore scelto: ${selectedColor}`,
-      optionsChosen: `Opzioni scelte: ${selectedOptions}`,
-      companyInfo: `KBMED\nGewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch`
+      recap: 'RIEPILOGO DELLA TUA CONFIGURAZIONE:',
+      colorChosen: `• Colore scelto: ${selectedColor}`,
+      optionsChosen: `• Opzioni scelte: ${selectedOptions}`,
+      companyInfo: `
+---
+KBMED Medizintechnik
+Gewerbestrasse 6
+4105 Biel-Benken
+Svizzera
+
+📞 Büro : +41 61 331 68 51
+📱 Mobile : +41 78 683 68 28
+📠 Fax : +41 61 331 68 52
+✉️ Email : info@kbmed.ch`
     }
   };
 
@@ -1256,16 +1193,55 @@ ${msg.thankYou}
 
 ${msg.seeYouSoon}
 
----
-
 ${msg.recap}
 
 ${msg.colorChosen}
+
 ${msg.optionsChosen}
 
----
-
 ${msg.companyInfo}`;
+}
+
+// Fonction de test simplifiée
+function testEmailJSConfiguration() {
+  console.log('=== Test Configuration EmailJS ===');
+  console.log('Service ID:', EMAILJS_CONFIG.SERVICE_ID);
+  console.log('Template ID:', EMAILJS_CONFIG.TEMPLATE_ID);
+  
+  // Test avec les MÊMES paramètres que le template
+  const testParams = {
+    to_email: 'marvinblaser.pro@gmail.com', // Remplacez par votre email
+    message: `Test de configuration EmailJS
+
+Bonjour,
+
+Ceci est un test pour vérifier que la configuration EmailJS fonctionne correctement.
+
+Couleur testée : RAL 9016
+Options testées : Test option 1, Test option 2
+
+---
+KBMED Medizintechnik
+info@kbmed.ch`
+  };
+  
+  console.log('Test avec paramètres:', testParams);
+  
+  emailjs.send(EMAILJS_CONFIG.SERVICE_ID, EMAILJS_CONFIG.TEMPLATE_ID, testParams)
+    .then(response => {
+      console.log('✅ Test réussi!', response);
+      alert('Test réussi ! Vérifiez votre boîte email.');
+    })
+    .catch(error => {
+      console.error('❌ Test échoué:', error);
+      alert('Test échoué : ' + (error.text || error.message));
+    });
+}
+
+// Garder toutes les autres fonctions (validation, modals, etc.) inchangées
+function validateEmail(email) {
+  const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return re.test(String(email).toLowerCase());
 }
 
 function completeEmailSending(success) {
@@ -1277,145 +1253,10 @@ function completeEmailSending(success) {
   }
 }
 
-// ========================================================
-// Gestion des modals
-// ========================================================
-function initModalHandlers() {
-  const openOptionsBtn = document.getElementById("openOptionsBtn");
-  const optionsModal = document.getElementById("optionsModal");
-  const validateOptionsBtn = document.getElementById("validateOptions");
-  const closeOptionsBtn = document.getElementById("closeOptions");
+// ... (gardez toutes les autres fonctions: initFormValidation, initModalHandlers, etc.)
 
-  const coordinatesModal = document.getElementById("coordinatesModal");
-  const closeCoordinatesBtn = document.getElementById("closeCoordinates");
-
-  const summaryModal = document.getElementById("summaryModal");
-  const closeSummaryBtn = document.getElementById("closeSummary");
-  const confirmOrderBtn = document.getElementById("confirmOrder");
-
-  // Ouvrir le modal options
-  if (openOptionsBtn) {
-    openOptionsBtn.addEventListener("click", function () {
-      optionsModal.classList.add("active");
-    });
-  }
-
-  // Valider les options et passer aux coordonnées
-  if (validateOptionsBtn) {
-    validateOptionsBtn.addEventListener("click", function () {
-      const checkedOptions = document.querySelectorAll(
-        ".checkbox-container input[type='checkbox']:checked"
-      );
-      const selectedOptions = Array.from(checkedOptions).map((checkbox) =>
-        checkbox.closest(".checkbox-container").querySelector(".label").textContent.trim()
-      );
-      sessionStorage.setItem("selectedOptions", JSON.stringify(selectedOptions));
-      console.log("Options sélectionnées :", selectedOptions);
-      optionsModal.classList.remove("active");
-      coordinatesModal.classList.add("active");
-    });
-  }
-
-  // Fermer les modals
-  if (closeOptionsBtn) {
-    closeOptionsBtn.addEventListener("click", function () {
-      optionsModal.classList.remove("active");
-    });
-  }
-
-  if (closeCoordinatesBtn) {
-    closeCoordinatesBtn.addEventListener("click", function () {
-      coordinatesModal.classList.remove("active");
-    });
-  }
-
-  if (closeSummaryBtn) {
-    closeSummaryBtn.addEventListener("click", function () {
-      summaryModal.classList.remove("active");
-    });
-  }
-
-  // Confirmer la commande = envoyer l'email
-  if (confirmOrderBtn) {
-    confirmOrderBtn.addEventListener("click", function () {
-      sendConfigurationEmail();
-    });
-  }
-}
-
-function closeCoordinatesModal() {
-  const coordinatesModal = document.getElementById("coordinatesModal");
-  if (coordinatesModal) {
-    coordinatesModal.classList.remove("active");
-  }
-}
-
-function openSummaryModal() {
-  // Récupération de la couleur active
-  let selectedColor = "RAL 9016"; // Couleur par défaut
-  const activeColorElement = document.querySelector('.color-option.active');
-  if (activeColorElement) {
-    const colorClass = Array.from(activeColorElement.classList).find(cls => cls.startsWith('color-ral'));
-    if (colorClass) {
-      selectedColor = colorClass.replace('color-', '').toUpperCase();
-    }
-  }
-
-  // Mise à jour du récapitulatif
-  const colorNameElement = document.getElementById("colorName");
-  const colorSampleElement = document.getElementById("colorSample");
-  
-  if (colorNameElement) {
-    colorNameElement.textContent = selectedColor;
-  }
-  
-  if (colorSampleElement && activeColorElement) {
-    colorSampleElement.className = activeColorElement.className.replace('color-option', 'color-sample');
-  }
-
-  // Récupération des options
-  const storedOptions = sessionStorage.getItem("selectedOptions");
-  const selectedOptions = storedOptions
-    ? JSON.parse(storedOptions).join(", ")
-    : "Aucune option sélectionnée";
-
-  const summaryOptionsElement = document.getElementById("summaryOptions");
-  if (summaryOptionsElement) {
-    summaryOptionsElement.textContent = "Options choisies : " + selectedOptions;
-  }
-
-  // Afficher le modal
-  const summaryModal = document.getElementById("summaryModal");
-  if (summaryModal) {
-    summaryModal.classList.add("active");
-  }
-}
-
-function closeSummaryModal() {
-  const summaryModal = document.getElementById("summaryModal");
-  if (summaryModal) {
-    summaryModal.classList.remove("active");
-  }
-}
-
-// ========================================================
-// Gestion des langues
-// ========================================================
-function initLanguageHandlers() {
-  const languageSelectors = document.querySelectorAll(".language-selector");
-  
-  // Définir le français comme langue par défaut
-  window.currentLanguage = "fr";
-  
-  languageSelectors.forEach((selector) => {
-    selector.addEventListener("click", function () {
-      languageSelectors.forEach((el) => el.classList.remove("active"));
-      this.classList.add("active");
-      window.currentLanguage = this.querySelector("img").getAttribute("data-lang");
-      console.log("Langue sélectionnée :", window.currentLanguage);
-    });
-  });
-}
+// Exposer la fonction de test
+window.testEmailJS = testEmailJSConfiguration;
     </script>
   </body>
 </html>
