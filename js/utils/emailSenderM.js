@@ -1,3 +1,4 @@
+import emailjs from '@emailjs/browser';
 emailjs.init("atUIFstP0TCmRcmjx");
 const EMAIL_SERVICE_ID = 'service_1g0zipm';
 const EMAIL_TEMPLATE_ID = 'template_50exznp'; 
