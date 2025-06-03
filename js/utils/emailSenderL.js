@@ -1,5 +1,5 @@
 emailjs.init("atUIFstP0TCmRcmjx");
-const EMAIL_SERVICE_ID = 'service_pff2cmo';
+const EMAIL_SERVICE_ID = 'service_1g0zipm';
 const EMAIL_TEMPLATE_ID = 'template_50exznp'; 
 
 document.addEventListener('DOMContentLoaded', function() {
