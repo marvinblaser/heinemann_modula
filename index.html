@@ -1110,8 +1110,10 @@
       // ========================================================
       // Envoi de l'email via EmailJS
       // ========================================================
-      const EMAIL_SERVICE_ID = "service_tuw71tf";
-      const EMAIL_TEMPLATE_ID = "template_50exznp";
+      import emailjs from '@emailjs/browser';
+emailjs.init("atUIFstP0TCmRcmjx");
+const EMAIL_SERVICE_ID = 'service_1g0zipm';
+const EMAIL_TEMPLATE_ID = 'template_50exznp'; 
 
       function sendConfigurationEmail() {
         const loadingSpinner = document.querySelector(".loading-spinner");
