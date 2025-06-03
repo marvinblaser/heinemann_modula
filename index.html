@@ -995,383 +995,427 @@
     <script>
       
       document.addEventListener("DOMContentLoaded", function () {
-        initFormValidation();
+  // Initialisation EmailJS (obligatoire avec la version CDN)
+  emailjs.init({
+    publicKey: "atUIFstP0TCmRcmjx"
+  });
+  
+  initFormValidation();
+  initModalHandlers();
+  initLanguageHandlers();
+});
+
+// Configuration EmailJS
+const EMAILJS_CONFIG = {
+  SERVICE_ID: 'service_1g0zipm',
+  TEMPLATE_ID: 'template_50exznp'
+};
+
+// ========================================================
+// Gestion des formulaires et validation
+// ========================================================
+function initFormValidation() {
+  const forms = document.querySelectorAll("form");
+
+  forms.forEach((form) => {
+    form.addEventListener("submit", function (e) {
+      if (form.getAttribute("data-js-submit") === "true") {
+        e.preventDefault();
+      }
+      if (!validateForm(form)) {
+        e.preventDefault();
+      } else {
+        console.log("Formulaire validé !");
+        if (form.id === "userInfoForm") {
+          closeCoordinatesModal();
+          openSummaryModal();
+        }
+      }
+    });
+
+    const inputs = form.querySelectorAll("input, select, textarea");
+    inputs.forEach((input) => {
+      input.addEventListener("blur", function () {
+        validateInput(this);
       });
-
-      function initFormValidation() {
-        const forms = document.querySelectorAll("form");
-
-        forms.forEach((form) => {
-          form.addEventListener("submit", function (e) {
-            if (form.getAttribute("data-js-submit") === "true") {
-              e.preventDefault();
-            }
-            if (!validateForm(form)) {
-              e.preventDefault();
-            } else {
-              console.log("Formulaire validé !");
-              // Pour le formulaire des coordonnées, on passe au popup récapitulatif
-              if (form.id === "userInfoForm") {
-                closeCoordinatesModal();
-                openSummaryModal();
-              } else {
-                sendConfigurationEmail();
-              }
-            }
-          });
-
-          const inputs = form.querySelectorAll("input, select, textarea");
-          inputs.forEach((input) => {
-            input.addEventListener("blur", function () {
-              validateInput(this);
-            });
-            input.addEventListener("input", function () {
-              if (this.classList.contains("invalid")) {
-                this.classList.remove("invalid");
-                const errorMessage = this.nextElementSibling;
-                if (
-                  errorMessage &&
-                  errorMessage.classList.contains("error-message")
-                ) {
-                  errorMessage.remove();
-                }
-              }
-            });
-          });
-        });
-      }
-
-      function validateForm(form) {
-        let isValid = true;
-        const inputs = form.querySelectorAll("input, select, textarea");
-        inputs.forEach((input) => {
-          if (!validateInput(input)) {
-            isValid = false;
+      input.addEventListener("input", function () {
+        if (this.classList.contains("invalid")) {
+          this.classList.remove("invalid");
+          const errorMessage = this.nextElementSibling;
+          if (errorMessage && errorMessage.classList.contains("error-message")) {
+            errorMessage.remove();
           }
-        });
-        return isValid;
+        }
+      });
+    });
+  });
+}
+
+function validateForm(form) {
+  let isValid = true;
+  const inputs = form.querySelectorAll("input, select, textarea");
+  inputs.forEach((input) => {
+    if (!validateInput(input)) {
+      isValid = false;
+    }
+  });
+  return isValid;
+}
+
+function validateInput(input) {
+  if (input.disabled || input.readOnly) {
+    return true;
+  }
+  let isValid = true;
+  let errorMessage = "";
+  const existingError = input.nextElementSibling;
+  if (existingError && existingError.classList.contains("error-message")) {
+    existingError.remove();
+  }
+  if (input.hasAttribute("required") && !input.value.trim()) {
+    isValid = false;
+    errorMessage = "Ce champ est requis";
+  } else if (
+    input.type === "email" &&
+    input.value.trim() &&
+    !validateEmail(input.value)
+  ) {
+    isValid = false;
+    errorMessage = "Veuillez entrer une adresse email valide";
+  }
+  if (!isValid) {
+    input.classList.add("invalid");
+    const errorElement = document.createElement("div");
+    errorElement.classList.add("error-message");
+    errorElement.textContent = errorMessage;
+    input.insertAdjacentElement("afterend", errorElement);
+  } else {
+    input.classList.remove("invalid");
+  }
+  return isValid;
+}
+
+function validateEmail(email) {
+  const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return re.test(String(email).toLowerCase());
+}
+
+// ========================================================
+// Envoi de l'email via EmailJS (VERSION CORRIGÉE)
+// ========================================================
+async function sendConfigurationEmail() {
+  const loadingSpinner = document.querySelector(".loading-spinner");
+  
+  try {
+    // Afficher le spinner
+    if (loadingSpinner) {
+      loadingSpinner.classList.remove("hide");
+    }
+
+    // Récupération des données utilisateur
+    const name = document.getElementById("name")?.value?.trim() || '';
+    const firstname = document.getElementById("firstname")?.value?.trim() || '';
+    const email = document.getElementById("email")?.value?.trim() || '';
+
+    // Validation email
+    if (!email || !validateEmail(email)) {
+      throw new Error("Veuillez entrer une adresse email valide.");
+    }
+
+    // Récupération de la couleur sélectionnée
+    let selectedColor = "Non spécifiée";
+    const colorElement = document.querySelector('.color-option.active');
+    if (colorElement) {
+      // Récupérer la classe de couleur (ex: color-ral9016)
+      const colorClass = Array.from(colorElement.classList).find(cls => cls.startsWith('color-ral'));
+      if (colorClass) {
+        selectedColor = colorClass.replace('color-', '').toUpperCase();
       }
+    }
 
-      function validateInput(input) {
-        if (input.disabled || input.readOnly) {
-          return true;
-        }
-        let isValid = true;
-        let errorMessage = "";
-        const existingError = input.nextElementSibling;
-        if (
-          existingError &&
-          existingError.classList.contains("error-message")
-        ) {
-          existingError.remove();
-        }
-        if (input.hasAttribute("required") && !input.value.trim()) {
-          isValid = false;
-          errorMessage = "Ce champ est requis";
-        } else if (
-          input.type === "email" &&
-          input.value.trim() &&
-          !validateEmail(input.value)
-        ) {
-          isValid = false;
-          errorMessage = "Veuillez entrer une adresse email valide";
-        } else if (input.hasAttribute("pattern") && input.value.trim()) {
-          const pattern = new RegExp(input.getAttribute("pattern"));
-          if (!pattern.test(input.value)) {
-            isValid = false;
-            errorMessage = input.title || "Format invalide";
-          }
-        } else if (
-          input.hasAttribute("minlength") &&
-          input.value.length < parseInt(input.getAttribute("minlength"))
-        ) {
-          isValid = false;
-          errorMessage = `Minimum ${input.getAttribute(
-            "minlength"
-          )} caractères requis`;
-        }
-        if (!isValid) {
-          input.classList.add("invalid");
-          const errorElement = document.createElement("div");
-          errorElement.classList.add("error-message");
-          errorElement.textContent = errorMessage;
-          input.insertAdjacentElement("afterend", errorElement);
-        } else {
-          input.classList.remove("invalid");
-        }
-        return isValid;
-      }
+    // Récupération des options depuis sessionStorage
+    const storedOptions = sessionStorage.getItem("selectedOptions");
+    const selectedOptions = storedOptions 
+      ? JSON.parse(storedOptions).join(", ") 
+      : "Aucune option sélectionnée";
 
-      function validateEmail(email) {
-        const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        return re.test(String(email).toLowerCase());
-      }
+    // Langue actuelle
+    const selectedLanguage = window.currentLanguage || "fr";
 
-      // ========================================================
-      // Envoi de l'email via EmailJS
-      // ========================================================
-emailjs.init("atUIFstP0TCmRcmjx");
-const EMAIL_SERVICE_ID = 'service_1g0zipm';
-const EMAIL_TEMPLATE_ID = 'template_50exznp'; 
+    // Préparation du contenu email
+    const emailContent = prepareEmailContent(
+      selectedLanguage,
+      firstname,
+      selectedColor,
+      selectedOptions
+    );
 
-      function sendConfigurationEmail() {
-        const loadingSpinner = document.querySelector(".loading-spinner");
-        if (loadingSpinner) loadingSpinner.classList.remove("hide");
+    // Paramètres pour le template EmailJS
+    const templateParams = {
+      to_name: `${firstname} ${name}`.trim(),
+      to_email: email,
+      from_name: "KBMED",
+      subject: getEmailSubject(selectedLanguage),
+      message: emailContent
+    };
 
-        const name = document.getElementById("name").value.trim();
-        const firstname = document.getElementById("firstname").value.trim();
-        const email = document.getElementById("email").value.trim();
+    console.log('Envoi de l\'email avec les paramètres:', templateParams);
 
-        if (!email) {
-          alert("Veuillez entrer une adresse email.");
-          if (loadingSpinner) loadingSpinner.classList.add("hide");
-          return;
-        }
+    // Envoi de l'email
+    const response = await emailjs.send(
+      EMAILJS_CONFIG.SERVICE_ID,
+      EMAILJS_CONFIG.TEMPLATE_ID,
+      templateParams
+    );
 
-        // Récupération de la couleur depuis un élément ou sessionStorage
-        let selectedColor = "";
-        const selectedColorElement = document.getElementById("selectedColor");
-        if (selectedColorElement) {
-          selectedColor = selectedColorElement.textContent.trim();
-        } else {
-          selectedColor = sessionStorage.getItem("selectedColor") || "";
-        }
+    console.log('Email envoyé avec succès:', response);
+    completeEmailSending(true);
 
-        // Récupération des options depuis le sessionStorage
-        const storedOptions = sessionStorage.getItem("selectedOptions");
-        const selectedOptions = storedOptions
-          ? JSON.parse(storedOptions).join(", ")
-          : "";
+  } catch (error) {
+    console.error('Erreur lors de l\'envoi:', error);
+    
+    let errorMessage = "Une erreur est survenue lors de l'envoi de l'email.";
+    
+    if (error.status === 400) {
+      errorMessage = "Erreur de configuration EmailJS. Vérifiez votre template.";
+    } else if (error.status === 401) {
+      errorMessage = "Clé publique EmailJS invalide.";
+    } else if (error.status === 404) {
+      errorMessage = "Service ou template EmailJS introuvable.";
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+    
+    alert(errorMessage);
+    completeEmailSending(false);
+    
+  } finally {
+    if (loadingSpinner) {
+      loadingSpinner.classList.add("hide");
+    }
+  }
+}
 
-        const selectedLanguage = window.currentLanguage || "fr";
+// Fonction pour obtenir le sujet selon la langue
+function getEmailSubject(language) {
+  const subjects = {
+    fr: '🎉 Votre configuration MODULA L a été enregistrée !',
+    de: '🎉 Ihre MODULA L Konfiguration wurde gespeichert!',
+    it: '🎉 La tua configurazione MODULA L è stata salvata!'
+  };
+  return subjects[language] || subjects.fr;
+}
 
-        const emailContent = prepareEmailContent(
-          selectedLanguage,
-          firstname,
-          selectedColor,
-          selectedOptions
-        );
+// Fonction pour préparer le contenu de l'email
+function prepareEmailContent(language, firstname, selectedColor, selectedOptions) {
+  const messages = {
+    fr: {
+      greeting: `Bonjour ${firstname},`,
+      confirmation: 'Nous confirmons que votre configuration pour le MODULA L a été enregistrée.',
+      contact: 'Nous vous contacterons dès que possible.',
+      thankYou: 'Merci pour votre intérêt.',
+      seeYouSoon: 'À bientôt !',
+      recap: 'Récapitulatif de votre commande :',
+      colorChosen: `Couleur choisie : ${selectedColor}`,
+      optionsChosen: `Options choisies : ${selectedOptions}`,
+      companyInfo: `KBMED\nGewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch`
+    },
+    de: {
+      greeting: `Guten Tag ${firstname},`,
+      confirmation: 'Wir bestätigen, dass Ihre Konfiguration für MODULA L gespeichert wurde.',
+      contact: 'Wir werden Sie so schnell wie möglich kontaktieren.',
+      thankYou: 'Danke für Ihr Interesse.',
+      seeYouSoon: 'Bis bald!',
+      recap: 'Zusammenfassung Ihrer Bestellung:',
+      colorChosen: `Gewählte Farbe: ${selectedColor}`,
+      optionsChosen: `Gewählte Optionen: ${selectedOptions}`,
+      companyInfo: `KBMED\nGewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch`
+    },
+    it: {
+      greeting: `Buongiorno ${firstname},`,
+      confirmation: 'Confermiamo che la configurazione del MODULA L è stata salvata.',
+      contact: 'Ti contatteremo il prima possibile.',
+      thankYou: 'Grazie per il tuo interesse.',
+      seeYouSoon: 'A presto!',
+      recap: 'Riepilogo del tuo ordine:',
+      colorChosen: `Colore scelto: ${selectedColor}`,
+      optionsChosen: `Opzioni scelte: ${selectedOptions}`,
+      companyInfo: `KBMED\nGewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch`
+    }
+  };
 
-        const templateParams = {
-          to_name: `${firstname} ${name}`,
-          to_email: email,
-          message: emailContent,
-        };
+  const msg = messages[language] || messages.fr;
+  
+  return `${msg.greeting}
 
-        emailjs
-          .send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, templateParams, "atUIFstP0TCmRcmjx")
-          .then(
-            function (response) {
-              console.log("SUCCESS!", response.status, response.text);
-              completeEmailSending(true);
-            },
-            function (error) {
-              console.log("FAILED...", error);
-              completeEmailSending(false);
-            }
-          );
-      }
-
-      function prepareEmailContent(
-        language,
-        firstname,
-        selectedColor,
-        selectedOptions
-      ) {
-        const messages = {
-          fr: {
-            subject: "🎉 Votre configuration a été enregistrée !",
-            greeting: `Bonjour ${firstname},\n`,
-            confirmation:
-              "Nous confirmons que votre configuration pour le MODULA L a été enregistrée.\n",
-            contact: "Nous vous contacterons dès que possible.\n",
-            thankYou: "Merci pour votre intérêt.\n",
-            seeYouSoon: "À bientôt !\n",
-            recap: "Récapitulatif de votre commande :\n",
-            colorChosen: `Couleur choisie : ${selectedColor}\n`,
-            optionsChosen: `Options choisies : ${selectedOptions}\n`,
-            companyInfo:
-              "KBMedizintechnik\nGewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch",
-          },
-          de: {
-            subject: "🎉 Ihre Konfiguration wurde gespeichert!",
-            greeting: `Guten Tag ${firstname},\n`,
-            confirmation:
-              "Wir bestätigen, dass Ihre Konfiguration für MODULA L gespeichert wurde.\n",
-            contact: "Wir werden Sie so schnell wie möglich kontaktieren.\n",
-            thankYou: "Danke für Ihr Interesse.\n",
-            seeYouSoon: "Bis bald!\n",
-            recap: "Zusammenfassung Ihrer Bestellung:\n",
-            colorChosen: `Gewählte Farbe: ${selectedColor}\n`,
-            optionsChosen: `Gewählte Optionen: ${selectedOptions}\n`,
-            companyInfo:
-              "KBMedizintechnik\nGewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch",
-          },
-          it: {
-            subject: "🎉 La tua configurazione è stata salvata!",
-            greeting: `Buongiorno ${firstname},\n`,
-            confirmation:
-              "Confermiamo che la configurazione del MODULA L è stata salvata.\n",
-            contact: "Ti contatteremo il prima possibile.\n",
-            thankYou: "Grazie per il tuo interesse.\n",
-            seeYouSoon: "A presto!\n",
-            recap: "Riepilogo del tuo ordine:\n",
-            colorChosen: `Colore scelto: ${selectedColor}\n`,
-            optionsChosen: `Opzioni scelte: ${selectedOptions}\n`,
-            companyInfo:
-              "KBMedizintechnik\nGewerbestrasse 6, 4105 Biel-Benken\nBüro : +41 61 331 68 51\nMobile : +41 78 683 68 28\nFax : +41 61 331 68 52\ninfo@kbmed.ch",
-          },
-        };
-
-        const msg = messages[language];
-        return `
-${msg.subject}\n
-${msg.greeting}
 ${msg.confirmation}
+
 ${msg.contact}
+
 ${msg.thankYou}
+
 ${msg.seeYouSoon}
+
+---
+
 ${msg.recap}
+
 ${msg.colorChosen}
 ${msg.optionsChosen}
-${msg.companyInfo}
-        `;
-      }
 
-      function completeEmailSending(success) {
-        const loadingSpinner = document.querySelector(".loading-spinner");
-        if (loadingSpinner) {
-          loadingSpinner.classList.add("hide");
-        }
-        if (success) {
-          alert(
-            "Votre configuration a été enregistrée et un email récapitulatif vous a été envoyé."
-          );
-          closeSummaryModal();
-        } else {
-          alert(
-            "Une erreur est survenue lors de l'envoi de l'email. Veuillez réessayer."
-          );
-        }
-      }
+---
 
-      function closeCoordinatesModal() {
-        const coordinatesModal = document.getElementById("coordinatesModal");
-        coordinatesModal.classList.remove("active");
-      }
+${msg.companyInfo}`;
+}
 
-      function openSummaryModal() {
-        // Récupération de la couleur depuis un élément ou sessionStorage
-        let selectedColor = "";
-        // Ici, vous pouvez adapter la méthode de récupération de couleur
-        const selectedColorElement = document.getElementById("selectedColor");
-        if (selectedColorElement) {
-          selectedColor = selectedColorElement.textContent.trim();
-        } else {
-          selectedColor = sessionStorage.getItem("selectedColor") || "ral-9016";
-        }
-        // Mettre à jour le nom de la couleur dans le récapitulatif
-        document.getElementById("colorName").textContent = selectedColor;
-        // Exemple simple : associer la classe de couleur à la sample
-        // Ici, nous supposons que la couleur récupérée correspond à une classe CSS définie comme .color-ralXXXX
-        // Vous pouvez adapter en fonction de votre logique de sélection couleur
-        document
-          .getElementById("colorSample")
-          .className = "color-sample " + (selectedColor || "").toLowerCase().replace(/\s/g, "");
+function completeEmailSending(success) {
+  if (success) {
+    alert("Votre configuration a été enregistrée et un email récapitulatif vous a été envoyé.");
+    closeSummaryModal();
+  } else {
+    console.log("Échec de l'envoi de l'email");
+  }
+}
 
-        // Récupération des options depuis le sessionStorage
-        const storedOptions = sessionStorage.getItem("selectedOptions");
-        let selectedOptions = storedOptions
-          ? JSON.parse(storedOptions).join(", ")
-          : "Aucune option sélectionnée";
+// ========================================================
+// Gestion des modals
+// ========================================================
+function initModalHandlers() {
+  const openOptionsBtn = document.getElementById("openOptionsBtn");
+  const optionsModal = document.getElementById("optionsModal");
+  const validateOptionsBtn = document.getElementById("validateOptions");
+  const closeOptionsBtn = document.getElementById("closeOptions");
 
-        document.getElementById("summaryOptions").textContent =
-          "Options choisies : " + selectedOptions;
+  const coordinatesModal = document.getElementById("coordinatesModal");
+  const closeCoordinatesBtn = document.getElementById("closeCoordinates");
 
-        const summaryModal = document.getElementById("summaryModal");
-        summaryModal.classList.add("active");
-      }
+  const summaryModal = document.getElementById("summaryModal");
+  const closeSummaryBtn = document.getElementById("closeSummary");
+  const confirmOrderBtn = document.getElementById("confirmOrder");
 
-      function closeSummaryModal() {
-        const summaryModal = document.getElementById("summaryModal");
-        summaryModal.classList.remove("active");
-      }
-    </script>
+  // Ouvrir le modal options
+  if (openOptionsBtn) {
+    openOptionsBtn.addEventListener("click", function () {
+      optionsModal.classList.add("active");
+    });
+  }
 
-    <!-- ======================================
-         Script de gestion des modals et de la langue
-    ====================================== -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Gestion des popups
-        const openOptionsBtn = document.getElementById("openOptionsBtn");
-        const optionsModal = document.getElementById("optionsModal");
-        const validateOptionsBtn = document.getElementById("validateOptions");
-        const closeOptionsBtn = document.getElementById("closeOptions");
+  // Valider les options et passer aux coordonnées
+  if (validateOptionsBtn) {
+    validateOptionsBtn.addEventListener("click", function () {
+      const checkedOptions = document.querySelectorAll(
+        ".checkbox-container input[type='checkbox']:checked"
+      );
+      const selectedOptions = Array.from(checkedOptions).map((checkbox) =>
+        checkbox.closest(".checkbox-container").querySelector(".label").textContent.trim()
+      );
+      sessionStorage.setItem("selectedOptions", JSON.stringify(selectedOptions));
+      console.log("Options sélectionnées :", selectedOptions);
+      optionsModal.classList.remove("active");
+      coordinatesModal.classList.add("active");
+    });
+  }
 
-        const coordinatesModal = document.getElementById("coordinatesModal");
-        const closeCoordinatesBtn = document.getElementById("closeCoordinates");
+  // Fermer les modals
+  if (closeOptionsBtn) {
+    closeOptionsBtn.addEventListener("click", function () {
+      optionsModal.classList.remove("active");
+    });
+  }
 
-        const summaryModal = document.getElementById("summaryModal");
-        const closeSummaryBtn = document.getElementById("closeSummary");
-        const confirmOrderBtn = document.getElementById("confirmOrder");
+  if (closeCoordinatesBtn) {
+    closeCoordinatesBtn.addEventListener("click", function () {
+      coordinatesModal.classList.remove("active");
+    });
+  }
 
-        openOptionsBtn.addEventListener("click", function () {
-          optionsModal.classList.add("active");
-        });
+  if (closeSummaryBtn) {
+    closeSummaryBtn.addEventListener("click", function () {
+      summaryModal.classList.remove("active");
+    });
+  }
 
-        validateOptionsBtn.addEventListener("click", function () {
-          const checkedOptions = document.querySelectorAll(
-            ".checkbox-container input[type='checkbox']:checked"
-          );
-          const selectedOptions = Array.from(checkedOptions).map((checkbox) =>
-            checkbox
-              .closest(".checkbox-container")
-              .querySelector(".label").textContent
-          );
-          sessionStorage.setItem("selectedOptions", JSON.stringify(selectedOptions));
-          console.log("Options sélectionnées :", selectedOptions);
-          optionsModal.classList.remove("active");
-          coordinatesModal.classList.add("active");
-        });
+  // Confirmer la commande = envoyer l'email
+  if (confirmOrderBtn) {
+    confirmOrderBtn.addEventListener("click", function () {
+      sendConfigurationEmail();
+    });
+  }
+}
 
-        if (closeOptionsBtn) {
-          closeOptionsBtn.addEventListener("click", function () {
-            optionsModal.classList.remove("active");
-          });
-        }
+function closeCoordinatesModal() {
+  const coordinatesModal = document.getElementById("coordinatesModal");
+  if (coordinatesModal) {
+    coordinatesModal.classList.remove("active");
+  }
+}
 
-        if (closeCoordinatesBtn) {
-          closeCoordinatesBtn.addEventListener("click", function () {
-            coordinatesModal.classList.remove("active");
-          });
-        }
+function openSummaryModal() {
+  // Récupération de la couleur active
+  let selectedColor = "RAL 9016"; // Couleur par défaut
+  const activeColorElement = document.querySelector('.color-option.active');
+  if (activeColorElement) {
+    const colorClass = Array.from(activeColorElement.classList).find(cls => cls.startsWith('color-ral'));
+    if (colorClass) {
+      selectedColor = colorClass.replace('color-', '').toUpperCase();
+    }
+  }
 
-        if (closeSummaryBtn) {
-          closeSummaryBtn.addEventListener("click", function () {
-            summaryModal.classList.remove("active");
-          });
-        }
+  // Mise à jour du récapitulatif
+  const colorNameElement = document.getElementById("colorName");
+  const colorSampleElement = document.getElementById("colorSample");
+  
+  if (colorNameElement) {
+    colorNameElement.textContent = selectedColor;
+  }
+  
+  if (colorSampleElement && activeColorElement) {
+    colorSampleElement.className = activeColorElement.className.replace('color-option', 'color-sample');
+  }
 
-        // Envoi du mail lors du clic sur "Confirmer" dans le popup récapitulatif
-        confirmOrderBtn.addEventListener("click", function () {
-          sendConfigurationEmail();
-        });
+  // Récupération des options
+  const storedOptions = sessionStorage.getItem("selectedOptions");
+  const selectedOptions = storedOptions
+    ? JSON.parse(storedOptions).join(", ")
+    : "Aucune option sélectionnée";
 
-        // Gestion du changement de langue
-        const languageSelectors = document.querySelectorAll(".language-selector");
-        languageSelectors.forEach((selector) => {
-          selector.addEventListener("click", function () {
-            languageSelectors.forEach((el) =>
-              el.classList.remove("active")
-            );
-            this.classList.add("active");
-            // Ici, vous pouvez définir la langue sélectionnée (ex: window.currentLanguage)
-            window.currentLanguage = this.querySelector("img").getAttribute("data-lang");
-            console.log("Langue sélectionnée :", window.currentLanguage);
-          });
-        });
-      });
+  const summaryOptionsElement = document.getElementById("summaryOptions");
+  if (summaryOptionsElement) {
+    summaryOptionsElement.textContent = "Options choisies : " + selectedOptions;
+  }
+
+  // Afficher le modal
+  const summaryModal = document.getElementById("summaryModal");
+  if (summaryModal) {
+    summaryModal.classList.add("active");
+  }
+}
+
+function closeSummaryModal() {
+  const summaryModal = document.getElementById("summaryModal");
+  if (summaryModal) {
+    summaryModal.classList.remove("active");
+  }
+}
+
+// ========================================================
+// Gestion des langues
+// ========================================================
+function initLanguageHandlers() {
+  const languageSelectors = document.querySelectorAll(".language-selector");
+  
+  // Définir le français comme langue par défaut
+  window.currentLanguage = "fr";
+  
+  languageSelectors.forEach((selector) => {
+    selector.addEventListener("click", function () {
+      languageSelectors.forEach((el) => el.classList.remove("active"));
+      this.classList.add("active");
+      window.currentLanguage = this.querySelector("img").getAttribute("data-lang");
+      console.log("Langue sélectionnée :", window.currentLanguage);
+    });
+  });
+}
     </script>
   </body>
 </html>
