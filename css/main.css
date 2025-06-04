@@ -167,3 +167,7 @@
   max-height: 300px;
   overflow: auto;
 }
+
+.hide {
+  display: none !important;
+}

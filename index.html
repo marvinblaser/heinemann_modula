@@ -984,14 +984,7 @@
         <a href="#"><img src="assets/icons/linkedin.svg" alt="LinkedIn" /></a>
       </div>
     </footer>
-    <script src="js/main.js"></script>
-    <script src="js/components/colorSelectorL.js"></script>
-    <script src="js/components/dropdown.js"></script>
-    <script src="js/components/navigation.js"></script>
-
-    <!-- ======================================
-         Script de validation et envoi d'email
-    ====================================== -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
     // ========================================================
 // Configuration EmailJS et initialisation
@@ -999,7 +992,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   // Initialisation EmailJS (obligatoire avec la version CDN)
   emailjs.init({
-    publicKey: "VPVu1JsENfGudAZkR"
+    publicKey: "Blw70yvT-RCSHSXpD"
   });
   
   initFormValidation();
@@ -1502,5 +1495,13 @@ Suisse
 // Exposer la fonction de test globalement
 window.testEmailJS = testEmailJSConfiguration;
     </script>
+    <script src="js/main.js"></script>
+    <script src="js/components/colorSelectorL.js"></script>
+    <script src="js/components/dropdown.js"></script>
+    <script src="js/components/navigation.js"></script>
+
+    <!-- ======================================
+         Script de validation et envoi d'email
+    ====================================== -->
   </body>
 </html>
